@@ -24,6 +24,7 @@
 "./Drivers/bno055_stm32/bno055.o"
 "./FATFS/App/fatfs.o"
 "./FATFS/Target/user_diskio.o"
+"./FATFS/Target/user_diskio_spi.o"
 "./Middlewares/Third_Party/FatFs/src/diskio.o"
 "./Middlewares/Third_Party/FatFs/src/ff.o"
 "./Middlewares/Third_Party/FatFs/src/ff_gen_drv.o"

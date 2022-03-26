@@ -19,12 +19,16 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "fatfs.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "bno055_stm32.h"
 #include "stm32f1xx_hal.h"
 #include "fatfs.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -34,6 +38,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -66,12 +71,22 @@ static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI2_Init(void);
 /* USER CODE BEGIN PFP */
-
+void myprintf(const char *fmt, ...);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void myprintf(const char *fmt, ...) {
+  static char buffer[256];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buffer, sizeof(buffer), fmt, args);
+  va_end(args);
 
+  int len = strlen(buffer);
+  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, len, -1);
+
+}
 /* USER CODE END 0 */
 
 /**
@@ -111,59 +126,88 @@ int main(void)
   bno055_setup();
   bno055_setOperationModeNDOF();
 
-  /* Wait for SD module reset */
-  	HAL_Delay(500);
+  myprintf("\r\n~ SD card demo by kiwih ~\r\n\r\n");
 
-  if(f_mount(&fs, "", 0) != FR_OK)
-    		_Error_Handler(__FILE__, __LINE__);
+      HAL_Delay(1000); //a short delay is important to let the SD card settle
 
-    	/* Open file to write */
-    	if(f_open(&fil, "first.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE) != FR_OK)
-    		_Error_Handler(__FILE__, __LINE__);
+      //some variables for FatFs
+      FATFS FatFs; 	//Fatfs handle
+      FIL fil; 		//File handle
+      FRESULT fres; //Result after operations
 
-    	/* Check freeSpace space */
-    	if(f_getfree("", &fre_clust, &pfs) != FR_OK)
-    		_Error_Handler(__FILE__, __LINE__);
+      //Open the file system
+      fres = f_mount(&FatFs, "", 1); //1=mount now
+      if (fres != FR_OK) {
+    	myprintf("f_mount error (%i)\r\n", fres);
+    	while(1);
+      }
 
-    	totalSpace = (uint32_t)((pfs->n_fatent - 2) * pfs->csize * 0.5);
-    	freeSpace = (uint32_t)(fre_clust * pfs->csize * 0.5);
+      //Let's get some statistics from the SD card
+      DWORD free_clusters, free_sectors, total_sectors;
 
-    	/* free space is less than 1kb */
-    	if(freeSpace < 1)
-    		_Error_Handler(__FILE__, __LINE__);
+      FATFS* getFreeFs;
 
-    	/* Writing text */
-    	f_puts("STM32 SD Card I/O Example via SPI\n", &fil);
-    	f_puts("Save the world!!!", &fil);
+      fres = f_getfree("", &free_clusters, &getFreeFs);
+      if (fres != FR_OK) {
+    	myprintf("f_getfree error (%i)\r\n", fres);
+    	while(1);
+      }
 
-    	/* Close file */
-    	if(f_close(&fil) != FR_OK)
-    		_Error_Handler(__FILE__, __LINE__);
+      //Formula comes from ChaN's documentation
+      total_sectors = (getFreeFs->n_fatent - 2) * getFreeFs->csize;
+      free_sectors = free_clusters * getFreeFs->csize;
 
-    	/* Open file to read */
-    	if(f_open(&fil, "first.txt", FA_READ) != FR_OK)
-    		_Error_Handler(__FILE__, __LINE__);
+      myprintf("SD card stats:\r\n%10lu KiB total drive space.\r\n%10lu KiB available.\r\n", total_sectors / 2, free_sectors / 2);
 
-    	while(f_gets(buffer, sizeof(buffer), &fil))
-    	{
-    		/* SWV output */
-    		printf("%s", buffer);
-    		fflush(stdout);
-    	}
+      //Now let's try to open file "test.txt"
+      fres = f_open(&fil, "test.txt", FA_READ);
+      if (fres != FR_OK) {
+    	myprintf("f_open error (%i)\r\n", fres);
+    	while(1);
+      }
+      myprintf("I was able to open 'test.txt' for reading!\r\n");
 
-    	/* Close file */
-    	if(f_close(&fil) != FR_OK)
-    		_Error_Handler(__FILE__, __LINE__);
+      //Read 30 bytes from "test.txt" on the SD card
+      BYTE readBuf[30];
 
-    	/* Unmount SDCARD */
-    	if(f_mount(NULL, "", 1) != FR_OK)
-    		_Error_Handler(__FILE__, __LINE__);
+      //We can either use f_read OR f_gets to get data out of files
+      //f_gets is a wrapper on f_read that does some string formatting for us
+      TCHAR* rres = f_gets((TCHAR*)readBuf, 30, &fil);
+      if(rres != 0) {
+    	myprintf("Read string from 'test.txt' contents: %s\r\n", readBuf);
+      } else {
+    	myprintf("f_gets error (%i)\r\n", fres);
+      }
+
+      //Be a tidy kiwi - don't forget to close your file!
+      f_close(&fil);
+
+      //Now let's try and write a file "write.txt"
+      fres = f_open(&fil, "write.txt", FA_WRITE | FA_OPEN_ALWAYS | FA_CREATE_ALWAYS);
+      if(fres == FR_OK) {
+    	myprintf("I was able to open 'write.txt' for writing\r\n");
+      } else {
+    	myprintf("f_open error (%i)\r\n", fres);
+      }
+
+      //Copy in a string
+      strncpy((char*)readBuf, "a new file is made!", 19);
+      UINT bytesWrote;
+      fres = f_write(&fil, readBuf, 19, &bytesWrote);
+      if(fres == FR_OK) {
+    	myprintf("Wrote %i bytes to 'write.txt'!\r\n", bytesWrote);
+      } else {
+    	myprintf("f_write error (%i)\r\n", fres);
+      }
+
+      //Be a tidy kiwi - don't forget to close your file!
+      f_close(&fil);
+
+      //We're done, so de-mount the drive
+      f_mount(NULL, "", 0);
 
 
   /* USER CODE END 2 */
-
-
-
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -172,6 +216,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+	  HAL_Delay(1000);
+
   }
   /* USER CODE END 3 */
 }
@@ -269,8 +316,8 @@ static void MX_SPI2_Init(void)
   hspi2.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi2.Init.NSS = SPI_NSS_HARD_OUTPUT;
-  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+  hspi2.Init.NSS = SPI_NSS_SOFT;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_128;
   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -336,6 +383,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(SD_CS_GPIO_Port, SD_CS_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
@@ -348,6 +398,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : SD_CS_Pin */
+  GPIO_InitStruct.Pin = SD_CS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(SD_CS_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
@@ -376,11 +433,10 @@ void _Error_Handler(char *file, int line)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+	/* User can add his own implementation to report the HAL error return state */
+	while(1)
+	{
+	}
   /* USER CODE END Error_Handler_Debug */
 }
 
