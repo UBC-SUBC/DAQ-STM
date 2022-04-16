@@ -1,0 +1,10 @@
+MS5837.c:17:26:I2C_Write	24	static
+MS5837.c:24:24:I2C_Read	24	static
+MS5837.c:39:16:crc4	24	static
+MS5837.c:75:17:MS5837_Init	24	static
+MS5837.c:105:17:MS5837_Reset	8	static
+MS5837.c:114:24:MS5837_ADC	24	static
+MS5837.c:141:6:MS5837_30BA_Calc	152	static
+MS5837.c:182:6:MS5837_02BA_Calc	160	static
+MS5837.c:212:7:MS5837_Depth	24	static
+MS5837.c:218:7:MS5837_Altitude	16	static
