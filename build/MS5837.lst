@@ -1,0 +1,1978 @@
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"MS5837.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.crc4,"ax",%progbits
+  18              		.align	1
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  23              	crc4:
+  24              	.LVL0:
+  25              	.LFB67:
+  26              		.file 1 "Core/Src/MS5837.c"
+   1:Core/Src/MS5837.c **** /*
+   2:Core/Src/MS5837.c ****  * MS5837.c
+   3:Core/Src/MS5837.c ****  *
+   4:Core/Src/MS5837.c ****  *  Created on: Feb 4, 2021
+   5:Core/Src/MS5837.c ****  *      Author: Zeynep Yurttas
+   6:Core/Src/MS5837.c ****  */
+   7:Core/Src/MS5837.c **** 
+   8:Core/Src/MS5837.c **** 
+   9:Core/Src/MS5837.c **** #include "MS5837.h"
+  10:Core/Src/MS5837.c **** #include "stm32f1xx_hal_i2c.h"
+  11:Core/Src/MS5837.c **** 
+  12:Core/Src/MS5837.c **** //extern I2C_HandleTypeDef * MS5837_i2c_Port;
+  13:Core/Src/MS5837.c **** //#define i2cHandler hi2c3
+  14:Core/Src/MS5837.c **** I2C_HandleTypeDef * MS5837_i2c_Port;
+  15:Core/Src/MS5837.c **** /****************************READ & WRITE FUNCTIONS*****************************************/
+  16:Core/Src/MS5837.c **** 
+  17:Core/Src/MS5837.c **** static HAL_StatusTypeDef I2C_Write(uint8_t addr) {
+  18:Core/Src/MS5837.c **** 	if(HAL_I2C_Master_Transmit(MS5837_i2c_Port, MS5837_ADDR<<1, &addr, 1, 100) != HAL_OK)
+  19:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+  20:Core/Src/MS5837.c **** 
+  21:Core/Src/MS5837.c **** 	return MS5837_OK;
+  22:Core/Src/MS5837.c **** }
+  23:Core/Src/MS5837.c **** 
+  24:Core/Src/MS5837.c **** static t_MS5837_Status I2C_Read(uint8_t addr,uint8_t *reg_data, uint8_t r_len){
+  25:Core/Src/MS5837.c **** 
+  26:Core/Src/MS5837.c **** 	if(HAL_I2C_Master_Transmit(MS5837_i2c_Port, MS5837_ADDR<<1, &addr, 1, 100) != HAL_OK){
+  27:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+  28:Core/Src/MS5837.c **** 	}
+  29:Core/Src/MS5837.c **** 
+  30:Core/Src/MS5837.c **** 	HAL_Delay(20);
+  31:Core/Src/MS5837.c **** 
+  32:Core/Src/MS5837.c **** 	if(HAL_I2C_Master_Receive(MS5837_i2c_Port, MS5837_ADDR<<1, reg_data, r_len, 100) == HAL_OK){
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 2
+
+
+  33:Core/Src/MS5837.c **** 		return MS5837_OK;
+  34:Core/Src/MS5837.c **** 	}
+  35:Core/Src/MS5837.c **** 
+  36:Core/Src/MS5837.c **** 	return MS5837_ERROR;
+  37:Core/Src/MS5837.c **** }
+  38:Core/Src/MS5837.c **** /*******************************************************************************************/
+  39:Core/Src/MS5837.c **** static uint8_t crc4(uint16_t n_prom[]) {
+  27              		.loc 1 39 40 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  40:Core/Src/MS5837.c **** 	uint16_t n_rem = 0;
+  32              		.loc 1 40 2 view .LVU1
+  41:Core/Src/MS5837.c **** 
+  42:Core/Src/MS5837.c **** 	n_prom[0] = ((n_prom[0]) & 0x0FFF);
+  33              		.loc 1 42 2 view .LVU2
+  34              		.loc 1 42 22 is_stmt 0 view .LVU3
+  35 0000 0388     		ldrh	r3, [r0]
+  36              		.loc 1 42 27 view .LVU4
+  37 0002 C3F30B03 		ubfx	r3, r3, #0, #12
+  38              		.loc 1 42 12 view .LVU5
+  39 0006 0380     		strh	r3, [r0]	@ movhi
+  43:Core/Src/MS5837.c **** 	n_prom[7] = 0;
+  40              		.loc 1 43 2 is_stmt 1 view .LVU6
+  41              		.loc 1 43 12 is_stmt 0 view .LVU7
+  42 0008 0023     		movs	r3, #0
+  43 000a C381     		strh	r3, [r0, #14]	@ movhi
+  44:Core/Src/MS5837.c **** 
+  45:Core/Src/MS5837.c **** 	for ( uint8_t i = 0 ; i < 16; i++ ) {
+  44              		.loc 1 45 2 is_stmt 1 view .LVU8
+  45              	.LBB2:
+  46              		.loc 1 45 8 view .LVU9
+  47              	.LVL1:
+  48              		.loc 1 45 16 is_stmt 0 view .LVU10
+  49 000c 1946     		mov	r1, r3
+  50              		.loc 1 45 2 view .LVU11
+  51 000e 15E0     		b	.L2
+  52              	.LVL2:
+  53              	.L3:
+  46:Core/Src/MS5837.c **** 		if ( i%2 == 1 ) {
+  47:Core/Src/MS5837.c **** 			n_rem ^= (uint16_t)((n_prom[i>>1]) & 0x00FF);
+  48:Core/Src/MS5837.c **** 		} else {
+  49:Core/Src/MS5837.c **** 			n_rem ^= (uint16_t)(n_prom[i>>1] >> 8);
+  54              		.loc 1 49 4 is_stmt 1 view .LVU12
+  55              		.loc 1 49 32 is_stmt 0 view .LVU13
+  56 0010 4A08     		lsrs	r2, r1, #1
+  57              		.loc 1 49 30 view .LVU14
+  58 0012 30F81220 		ldrh	r2, [r0, r2, lsl #1]
+  59              		.loc 1 49 10 view .LVU15
+  60 0016 83EA1223 		eor	r3, r3, r2, lsr #8
+  61              	.LVL3:
+  62              		.loc 1 49 10 view .LVU16
+  63 001a 19E0     		b	.L5
+  64              	.LVL4:
+  65              	.L6:
+  66              	.LBB3:
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 3
+
+
+  50:Core/Src/MS5837.c **** 		}
+  51:Core/Src/MS5837.c **** 		for ( uint8_t n_bit = 8 ; n_bit > 0 ; n_bit-- ) {
+  52:Core/Src/MS5837.c **** 			if ( n_rem & 0x8000 ) {
+  53:Core/Src/MS5837.c **** 				n_rem = (n_rem << 1) ^ 0x3000;
+  54:Core/Src/MS5837.c **** 			} else {
+  55:Core/Src/MS5837.c **** 				n_rem = (n_rem << 1);
+  67              		.loc 1 55 5 is_stmt 1 view .LVU17
+  68              		.loc 1 55 11 is_stmt 0 view .LVU18
+  69 001c 5B00     		lsls	r3, r3, #1
+  70              	.LVL5:
+  71              		.loc 1 55 11 view .LVU19
+  72 001e 9BB2     		uxth	r3, r3
+  73              	.LVL6:
+  74              	.L7:
+  51:Core/Src/MS5837.c **** 			if ( n_rem & 0x8000 ) {
+  75              		.loc 1 51 41 is_stmt 1 discriminator 2 view .LVU20
+  51:Core/Src/MS5837.c **** 			if ( n_rem & 0x8000 ) {
+  76              		.loc 1 51 46 is_stmt 0 discriminator 2 view .LVU21
+  77 0020 013A     		subs	r2, r2, #1
+  78              	.LVL7:
+  51:Core/Src/MS5837.c **** 			if ( n_rem & 0x8000 ) {
+  79              		.loc 1 51 46 discriminator 2 view .LVU22
+  80 0022 D2B2     		uxtb	r2, r2
+  81              	.LVL8:
+  82              	.L4:
+  51:Core/Src/MS5837.c **** 			if ( n_rem & 0x8000 ) {
+  83              		.loc 1 51 29 is_stmt 1 discriminator 1 view .LVU23
+  51:Core/Src/MS5837.c **** 			if ( n_rem & 0x8000 ) {
+  84              		.loc 1 51 3 is_stmt 0 discriminator 1 view .LVU24
+  85 0024 42B1     		cbz	r2, .L10
+  52:Core/Src/MS5837.c **** 				n_rem = (n_rem << 1) ^ 0x3000;
+  86              		.loc 1 52 4 is_stmt 1 view .LVU25
+  52:Core/Src/MS5837.c **** 				n_rem = (n_rem << 1) ^ 0x3000;
+  87              		.loc 1 52 7 is_stmt 0 view .LVU26
+  88 0026 13F4004F 		tst	r3, #32768
+  89 002a F7D0     		beq	.L6
+  53:Core/Src/MS5837.c **** 			} else {
+  90              		.loc 1 53 5 is_stmt 1 view .LVU27
+  53:Core/Src/MS5837.c **** 			} else {
+  91              		.loc 1 53 20 is_stmt 0 view .LVU28
+  92 002c 5B00     		lsls	r3, r3, #1
+  93              	.LVL9:
+  53:Core/Src/MS5837.c **** 			} else {
+  94              		.loc 1 53 26 view .LVU29
+  95 002e 83F44053 		eor	r3, r3, #12288
+  96 0032 1BB2     		sxth	r3, r3
+  53:Core/Src/MS5837.c **** 			} else {
+  97              		.loc 1 53 11 view .LVU30
+  98 0034 9BB2     		uxth	r3, r3
+  99              	.LVL10:
+  53:Core/Src/MS5837.c **** 			} else {
+ 100              		.loc 1 53 11 view .LVU31
+ 101 0036 F3E7     		b	.L7
+ 102              	.L10:
+  53:Core/Src/MS5837.c **** 			} else {
+ 103              		.loc 1 53 11 view .LVU32
+ 104              	.LBE3:
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 4
+
+
+  45:Core/Src/MS5837.c **** 		if ( i%2 == 1 ) {
+ 105              		.loc 1 45 32 is_stmt 1 discriminator 2 view .LVU33
+  45:Core/Src/MS5837.c **** 		if ( i%2 == 1 ) {
+ 106              		.loc 1 45 33 is_stmt 0 discriminator 2 view .LVU34
+ 107 0038 0131     		adds	r1, r1, #1
+ 108              	.LVL11:
+  45:Core/Src/MS5837.c **** 		if ( i%2 == 1 ) {
+ 109              		.loc 1 45 33 discriminator 2 view .LVU35
+ 110 003a C9B2     		uxtb	r1, r1
+ 111              	.LVL12:
+ 112              	.L2:
+  45:Core/Src/MS5837.c **** 		if ( i%2 == 1 ) {
+ 113              		.loc 1 45 24 is_stmt 1 discriminator 1 view .LVU36
+  45:Core/Src/MS5837.c **** 		if ( i%2 == 1 ) {
+ 114              		.loc 1 45 2 is_stmt 0 discriminator 1 view .LVU37
+ 115 003c 0F29     		cmp	r1, #15
+ 116 003e 09D8     		bhi	.L11
+  46:Core/Src/MS5837.c **** 			n_rem ^= (uint16_t)((n_prom[i>>1]) & 0x00FF);
+ 117              		.loc 1 46 3 is_stmt 1 view .LVU38
+  46:Core/Src/MS5837.c **** 			n_rem ^= (uint16_t)((n_prom[i>>1]) & 0x00FF);
+ 118              		.loc 1 46 6 is_stmt 0 view .LVU39
+ 119 0040 11F0010F 		tst	r1, #1
+ 120 0044 E4D0     		beq	.L3
+  47:Core/Src/MS5837.c **** 		} else {
+ 121              		.loc 1 47 4 is_stmt 1 view .LVU40
+  47:Core/Src/MS5837.c **** 		} else {
+ 122              		.loc 1 47 33 is_stmt 0 view .LVU41
+ 123 0046 4A08     		lsrs	r2, r1, #1
+  47:Core/Src/MS5837.c **** 		} else {
+ 124              		.loc 1 47 31 view .LVU42
+ 125 0048 30F91220 		ldrsh	r2, [r0, r2, lsl #1]
+  47:Core/Src/MS5837.c **** 		} else {
+ 126              		.loc 1 47 13 view .LVU43
+ 127 004c D2B2     		uxtb	r2, r2
+  47:Core/Src/MS5837.c **** 		} else {
+ 128              		.loc 1 47 10 view .LVU44
+ 129 004e 5340     		eors	r3, r3, r2
+ 130              	.LVL13:
+ 131              	.L5:
+  47:Core/Src/MS5837.c **** 		} else {
+ 132              		.loc 1 47 10 view .LVU45
+ 133              	.LBE2:
+  39:Core/Src/MS5837.c **** 	uint16_t n_rem = 0;
+ 134              		.loc 1 39 40 discriminator 1 view .LVU46
+ 135 0050 0822     		movs	r2, #8
+ 136 0052 E7E7     		b	.L4
+ 137              	.L11:
+  56:Core/Src/MS5837.c **** 			}
+  57:Core/Src/MS5837.c **** 		}
+  58:Core/Src/MS5837.c **** 	}
+  59:Core/Src/MS5837.c **** 
+  60:Core/Src/MS5837.c **** 	n_rem = ((n_rem >> 12) & 0x000F);
+ 138              		.loc 1 60 2 is_stmt 1 view .LVU47
+ 139              	.LVL14:
+  61:Core/Src/MS5837.c **** 
+  62:Core/Src/MS5837.c **** 	return n_rem ^ 0x00;
+ 140              		.loc 1 62 2 view .LVU48
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 5
+
+
+  63:Core/Src/MS5837.c **** }
+ 141              		.loc 1 63 1 is_stmt 0 view .LVU49
+ 142 0054 180B     		lsrs	r0, r3, #12
+ 143              	.LVL15:
+ 144              		.loc 1 63 1 view .LVU50
+ 145 0056 7047     		bx	lr
+ 146              		.cfi_endproc
+ 147              	.LFE67:
+ 149              		.section	.text.I2C_Write,"ax",%progbits
+ 150              		.align	1
+ 151              		.syntax unified
+ 152              		.thumb
+ 153              		.thumb_func
+ 155              	I2C_Write:
+ 156              	.LVL16:
+ 157              	.LFB65:
+  17:Core/Src/MS5837.c **** 	if(HAL_I2C_Master_Transmit(MS5837_i2c_Port, MS5837_ADDR<<1, &addr, 1, 100) != HAL_OK)
+ 158              		.loc 1 17 50 is_stmt 1 view -0
+ 159              		.cfi_startproc
+ 160              		@ args = 0, pretend = 0, frame = 8
+ 161              		@ frame_needed = 0, uses_anonymous_args = 0
+  17:Core/Src/MS5837.c **** 	if(HAL_I2C_Master_Transmit(MS5837_i2c_Port, MS5837_ADDR<<1, &addr, 1, 100) != HAL_OK)
+ 162              		.loc 1 17 50 is_stmt 0 view .LVU52
+ 163 0000 00B5     		push	{lr}
+ 164              	.LCFI0:
+ 165              		.cfi_def_cfa_offset 4
+ 166              		.cfi_offset 14, -4
+ 167 0002 85B0     		sub	sp, sp, #20
+ 168              	.LCFI1:
+ 169              		.cfi_def_cfa_offset 24
+ 170 0004 8DF80F00 		strb	r0, [sp, #15]
+  18:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 171              		.loc 1 18 2 is_stmt 1 view .LVU53
+  18:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 172              		.loc 1 18 5 is_stmt 0 view .LVU54
+ 173 0008 6423     		movs	r3, #100
+ 174 000a 0093     		str	r3, [sp]
+ 175 000c 0123     		movs	r3, #1
+ 176 000e 0DF10F02 		add	r2, sp, #15
+ 177 0012 EC21     		movs	r1, #236
+ 178 0014 0448     		ldr	r0, .L17
+ 179              	.LVL17:
+  18:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 180              		.loc 1 18 5 view .LVU55
+ 181 0016 0068     		ldr	r0, [r0]
+ 182 0018 FFF7FEFF 		bl	HAL_I2C_Master_Transmit
+ 183              	.LVL18:
+  18:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 184              		.loc 1 18 4 view .LVU56
+ 185 001c 10B9     		cbnz	r0, .L16
+ 186              	.L13:
+  22:Core/Src/MS5837.c **** 
+ 187              		.loc 1 22 1 view .LVU57
+ 188 001e 05B0     		add	sp, sp, #20
+ 189              	.LCFI2:
+ 190              		.cfi_remember_state
+ 191              		.cfi_def_cfa_offset 4
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 6
+
+
+ 192              		@ sp needed
+ 193 0020 5DF804FB 		ldr	pc, [sp], #4
+ 194              	.L16:
+ 195              	.LCFI3:
+ 196              		.cfi_restore_state
+  19:Core/Src/MS5837.c **** 
+ 197              		.loc 1 19 10 view .LVU58
+ 198 0024 FF20     		movs	r0, #255
+ 199 0026 FAE7     		b	.L13
+ 200              	.L18:
+ 201              		.align	2
+ 202              	.L17:
+ 203 0028 00000000 		.word	.LANCHOR0
+ 204              		.cfi_endproc
+ 205              	.LFE65:
+ 207              		.section	.text.I2C_Read,"ax",%progbits
+ 208              		.align	1
+ 209              		.syntax unified
+ 210              		.thumb
+ 211              		.thumb_func
+ 213              	I2C_Read:
+ 214              	.LVL19:
+ 215              	.LFB66:
+  24:Core/Src/MS5837.c **** 
+ 216              		.loc 1 24 79 is_stmt 1 view -0
+ 217              		.cfi_startproc
+ 218              		@ args = 0, pretend = 0, frame = 8
+ 219              		@ frame_needed = 0, uses_anonymous_args = 0
+  24:Core/Src/MS5837.c **** 
+ 220              		.loc 1 24 79 is_stmt 0 view .LVU60
+ 221 0000 30B5     		push	{r4, r5, lr}
+ 222              	.LCFI4:
+ 223              		.cfi_def_cfa_offset 12
+ 224              		.cfi_offset 4, -12
+ 225              		.cfi_offset 5, -8
+ 226              		.cfi_offset 14, -4
+ 227 0002 85B0     		sub	sp, sp, #20
+ 228              	.LCFI5:
+ 229              		.cfi_def_cfa_offset 32
+ 230 0004 0C46     		mov	r4, r1
+ 231 0006 1546     		mov	r5, r2
+ 232 0008 8DF80F00 		strb	r0, [sp, #15]
+  26:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 233              		.loc 1 26 2 is_stmt 1 view .LVU61
+  26:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 234              		.loc 1 26 5 is_stmt 0 view .LVU62
+ 235 000c 6423     		movs	r3, #100
+ 236 000e 0093     		str	r3, [sp]
+ 237 0010 0123     		movs	r3, #1
+ 238 0012 0DF10F02 		add	r2, sp, #15
+ 239              	.LVL20:
+  26:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 240              		.loc 1 26 5 view .LVU63
+ 241 0016 EC21     		movs	r1, #236
+ 242              	.LVL21:
+  26:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 243              		.loc 1 26 5 view .LVU64
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 7
+
+
+ 244 0018 0D48     		ldr	r0, .L25
+ 245              	.LVL22:
+  26:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 246              		.loc 1 26 5 view .LVU65
+ 247 001a 0068     		ldr	r0, [r0]
+ 248 001c FFF7FEFF 		bl	HAL_I2C_Master_Transmit
+ 249              	.LVL23:
+  26:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 250              		.loc 1 26 4 view .LVU66
+ 251 0020 90B9     		cbnz	r0, .L21
+  30:Core/Src/MS5837.c **** 
+ 252              		.loc 1 30 2 is_stmt 1 view .LVU67
+ 253 0022 1420     		movs	r0, #20
+ 254 0024 FFF7FEFF 		bl	HAL_Delay
+ 255              	.LVL24:
+  32:Core/Src/MS5837.c **** 		return MS5837_OK;
+ 256              		.loc 1 32 2 view .LVU68
+  32:Core/Src/MS5837.c **** 		return MS5837_OK;
+ 257              		.loc 1 32 5 is_stmt 0 view .LVU69
+ 258 0028 6423     		movs	r3, #100
+ 259 002a 0093     		str	r3, [sp]
+ 260 002c 2B46     		mov	r3, r5
+ 261 002e 2246     		mov	r2, r4
+ 262 0030 EC21     		movs	r1, #236
+ 263 0032 0748     		ldr	r0, .L25
+ 264 0034 0068     		ldr	r0, [r0]
+ 265 0036 FFF7FEFF 		bl	HAL_I2C_Master_Receive
+ 266              	.LVL25:
+  32:Core/Src/MS5837.c **** 		return MS5837_OK;
+ 267              		.loc 1 32 4 view .LVU70
+ 268 003a 10B9     		cbnz	r0, .L24
+  33:Core/Src/MS5837.c **** 	}
+ 269              		.loc 1 33 10 view .LVU71
+ 270 003c 0020     		movs	r0, #0
+ 271              	.L20:
+  37:Core/Src/MS5837.c **** /*******************************************************************************************/
+ 272              		.loc 1 37 1 view .LVU72
+ 273 003e 05B0     		add	sp, sp, #20
+ 274              	.LCFI6:
+ 275              		.cfi_remember_state
+ 276              		.cfi_def_cfa_offset 12
+ 277              		@ sp needed
+ 278 0040 30BD     		pop	{r4, r5, pc}
+ 279              	.LVL26:
+ 280              	.L24:
+ 281              	.LCFI7:
+ 282              		.cfi_restore_state
+  36:Core/Src/MS5837.c **** }
+ 283              		.loc 1 36 9 view .LVU73
+ 284 0042 4FF0FF30 		mov	r0, #-1
+ 285 0046 FAE7     		b	.L20
+ 286              	.L21:
+  27:Core/Src/MS5837.c **** 	}
+ 287              		.loc 1 27 10 view .LVU74
+ 288 0048 4FF0FF30 		mov	r0, #-1
+ 289 004c F7E7     		b	.L20
+ 290              	.L26:
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 8
+
+
+ 291 004e 00BF     		.align	2
+ 292              	.L25:
+ 293 0050 00000000 		.word	.LANCHOR0
+ 294              		.cfi_endproc
+ 295              	.LFE66:
+ 297              		.section	.text.MS5837_ADC,"ax",%progbits
+ 298              		.align	1
+ 299              		.syntax unified
+ 300              		.thumb
+ 301              		.thumb_func
+ 303              	MS5837_ADC:
+ 304              	.LVL27:
+ 305              	.LFB70:
+  64:Core/Src/MS5837.c **** 
+  65:Core/Src/MS5837.c **** 
+  66:Core/Src/MS5837.c **** /* Set fluid density to 1029 as default
+  67:Core/Src/MS5837.c ****  * Set  model to MS5837_30BA as default
+  68:Core/Src/MS5837.c ****  * Trigger a power-on reset right after power-on (this helps getting the right calibration values)
+  69:Core/Src/MS5837.c ****  * Read calibration data
+  70:Core/Src/MS5837.c ****  * Check if the values are transmitted correctly by using CRC calculation
+  71:Core/Src/MS5837.c ****  *
+  72:Core/Src/MS5837.c ****  *** After using this function, calibration data can be reached through MS5837->val.C ***
+  73:Core/Src/MS5837.c ****  *** This function returns communication result ***
+  74:Core/Src/MS5837.c ****  */
+  75:Core/Src/MS5837.c **** t_MS5837_Status MS5837_Init(MS5837_t *MS5837){
+  76:Core/Src/MS5837.c **** 	MS5837->fluidDensity = 1029;
+  77:Core/Src/MS5837.c **** 	MS5837->model = MS5837_30BA;
+  78:Core/Src/MS5837.c **** 
+  79:Core/Src/MS5837.c **** 	/* Write one byte reset command */
+  80:Core/Src/MS5837.c **** 	while( MS5837_Reset() != MS5837_OK ){
+  81:Core/Src/MS5837.c **** 		MS5837_Reset();
+  82:Core/Src/MS5837.c **** 	}
+  83:Core/Src/MS5837.c **** 
+  84:Core/Src/MS5837.c **** 	HAL_Delay(20);
+  85:Core/Src/MS5837.c **** 	while(1){
+  86:Core/Src/MS5837.c **** 		/* Read calibration data from PROM */
+  87:Core/Src/MS5837.c **** 		for(uint8_t i=0; i<7 ; i++){
+  88:Core/Src/MS5837.c **** 			uint8_t buffer[2];
+  89:Core/Src/MS5837.c **** 			I2C_Read(MS5837_PROM_READ + (i*2), buffer, 2);
+  90:Core/Src/MS5837.c **** 			MS5837->val.C[i] = buffer[1] | (buffer[0] << 8);
+  91:Core/Src/MS5837.c **** 		}
+  92:Core/Src/MS5837.c **** 		uint8_t crcRead = MS5837->val.C[0] >> 12;
+  93:Core/Src/MS5837.c **** 		uint8_t crcCalculated = crc4(MS5837->val.C);
+  94:Core/Src/MS5837.c **** 
+  95:Core/Src/MS5837.c **** 		if ( crcCalculated == crcRead ) {
+  96:Core/Src/MS5837.c **** 			return MS5837_OK;
+  97:Core/Src/MS5837.c **** 		}
+  98:Core/Src/MS5837.c **** 	}
+  99:Core/Src/MS5837.c **** 
+ 100:Core/Src/MS5837.c **** 
+ 101:Core/Src/MS5837.c **** 
+ 102:Core/Src/MS5837.c **** }
+ 103:Core/Src/MS5837.c **** 
+ 104:Core/Src/MS5837.c **** /* Power-on reset function */
+ 105:Core/Src/MS5837.c **** t_MS5837_Status MS5837_Reset(){
+ 106:Core/Src/MS5837.c **** 	if(I2C_Write(MS5837_RESET) == HAL_OK){
+ 107:Core/Src/MS5837.c **** 		HAL_Delay(20);
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 9
+
+
+ 108:Core/Src/MS5837.c **** 		return MS5837_OK;
+ 109:Core/Src/MS5837.c **** 	}
+ 110:Core/Src/MS5837.c **** 	return MS5837_ERROR;
+ 111:Core/Src/MS5837.c **** }
+ 112:Core/Src/MS5837.c **** 
+ 113:Core/Src/MS5837.c **** /* This function reads ADC results (D1 & D2 values) */
+ 114:Core/Src/MS5837.c **** static t_MS5837_Status MS5837_ADC(MS5837_t *MS5837){
+ 306              		.loc 1 114 52 is_stmt 1 view -0
+ 307              		.cfi_startproc
+ 308              		@ args = 0, pretend = 0, frame = 8
+ 309              		@ frame_needed = 0, uses_anonymous_args = 0
+ 310              		.loc 1 114 52 is_stmt 0 view .LVU76
+ 311 0000 10B5     		push	{r4, lr}
+ 312              	.LCFI8:
+ 313              		.cfi_def_cfa_offset 8
+ 314              		.cfi_offset 4, -8
+ 315              		.cfi_offset 14, -4
+ 316 0002 82B0     		sub	sp, sp, #8
+ 317              	.LCFI9:
+ 318              		.cfi_def_cfa_offset 16
+ 319 0004 0446     		mov	r4, r0
+ 115:Core/Src/MS5837.c **** 	/* Send command to start calculation of D1 and D2 */
+ 116:Core/Src/MS5837.c **** 	if(I2C_Write(MS5837_CONVERT_D1_8192) != HAL_OK){
+ 320              		.loc 1 116 2 is_stmt 1 view .LVU77
+ 321              		.loc 1 116 5 is_stmt 0 view .LVU78
+ 322 0006 4A20     		movs	r0, #74
+ 323              	.LVL28:
+ 324              		.loc 1 116 5 view .LVU79
+ 325 0008 FFF7FEFF 		bl	I2C_Write
+ 326              	.LVL29:
+ 327              		.loc 1 116 4 view .LVU80
+ 328 000c 68BB     		cbnz	r0, .L29
+ 117:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 118:Core/Src/MS5837.c **** 	}
+ 119:Core/Src/MS5837.c **** 
+ 120:Core/Src/MS5837.c **** 	HAL_Delay(20);
+ 329              		.loc 1 120 2 is_stmt 1 view .LVU81
+ 330 000e 1420     		movs	r0, #20
+ 331 0010 FFF7FEFF 		bl	HAL_Delay
+ 332              	.LVL30:
+ 121:Core/Src/MS5837.c **** 
+ 122:Core/Src/MS5837.c **** 	uint8_t buffer[3];
+ 333              		.loc 1 122 2 view .LVU82
+ 123:Core/Src/MS5837.c **** 	if(I2C_Read(MS5837_ADC_READ, buffer, 3) != MS5837_OK ){
+ 334              		.loc 1 123 2 view .LVU83
+ 335              		.loc 1 123 5 is_stmt 0 view .LVU84
+ 336 0014 0322     		movs	r2, #3
+ 337 0016 01A9     		add	r1, sp, #4
+ 338 0018 0020     		movs	r0, #0
+ 339 001a FFF7FEFF 		bl	I2C_Read
+ 340              	.LVL31:
+ 341              		.loc 1 123 4 view .LVU85
+ 342 001e 38BB     		cbnz	r0, .L30
+ 124:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 125:Core/Src/MS5837.c **** 	}
+ 126:Core/Src/MS5837.c **** 	MS5837->val.D1 = buffer[2] | (buffer[1] << 8) | (buffer[0] << 16);
+ 343              		.loc 1 126 2 is_stmt 1 view .LVU86
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 10
+
+
+ 344              		.loc 1 126 25 is_stmt 0 view .LVU87
+ 345 0020 9DF80630 		ldrb	r3, [sp, #6]	@ zero_extendqisi2
+ 346              		.loc 1 126 38 view .LVU88
+ 347 0024 9DF80520 		ldrb	r2, [sp, #5]	@ zero_extendqisi2
+ 348              		.loc 1 126 29 view .LVU89
+ 349 0028 43EA0223 		orr	r3, r3, r2, lsl #8
+ 350              		.loc 1 126 57 view .LVU90
+ 351 002c 9DF80420 		ldrb	r2, [sp, #4]	@ zero_extendqisi2
+ 352              		.loc 1 126 48 view .LVU91
+ 353 0030 43EA0243 		orr	r3, r3, r2, lsl #16
+ 354              		.loc 1 126 17 view .LVU92
+ 355 0034 A362     		str	r3, [r4, #40]
+ 127:Core/Src/MS5837.c **** 
+ 128:Core/Src/MS5837.c **** 	if(I2C_Write(MS5837_CONVERT_D2_8192) != HAL_OK){
+ 356              		.loc 1 128 2 is_stmt 1 view .LVU93
+ 357              		.loc 1 128 5 is_stmt 0 view .LVU94
+ 358 0036 5A20     		movs	r0, #90
+ 359 0038 FFF7FEFF 		bl	I2C_Write
+ 360              	.LVL32:
+ 361              		.loc 1 128 4 view .LVU95
+ 362 003c D8B9     		cbnz	r0, .L31
+ 129:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 130:Core/Src/MS5837.c **** 	}
+ 131:Core/Src/MS5837.c **** 
+ 132:Core/Src/MS5837.c **** 	HAL_Delay(20);
+ 363              		.loc 1 132 2 is_stmt 1 view .LVU96
+ 364 003e 1420     		movs	r0, #20
+ 365 0040 FFF7FEFF 		bl	HAL_Delay
+ 366              	.LVL33:
+ 133:Core/Src/MS5837.c **** 
+ 134:Core/Src/MS5837.c **** 	if(I2C_Read( MS5837_ADC_READ, buffer, 3) != MS5837_OK ){
+ 367              		.loc 1 134 2 view .LVU97
+ 368              		.loc 1 134 5 is_stmt 0 view .LVU98
+ 369 0044 0322     		movs	r2, #3
+ 370 0046 01A9     		add	r1, sp, #4
+ 371 0048 0020     		movs	r0, #0
+ 372 004a FFF7FEFF 		bl	I2C_Read
+ 373              	.LVL34:
+ 374              		.loc 1 134 4 view .LVU99
+ 375 004e A8B9     		cbnz	r0, .L32
+ 135:Core/Src/MS5837.c **** 		return MS5837_ERROR;
+ 136:Core/Src/MS5837.c **** 	}
+ 137:Core/Src/MS5837.c **** 	MS5837->val.D2 = buffer[2] | (buffer[1] << 8) | (buffer[0] << 16);
+ 376              		.loc 1 137 2 is_stmt 1 view .LVU100
+ 377              		.loc 1 137 25 is_stmt 0 view .LVU101
+ 378 0050 9DF80630 		ldrb	r3, [sp, #6]	@ zero_extendqisi2
+ 379              		.loc 1 137 38 view .LVU102
+ 380 0054 9DF80520 		ldrb	r2, [sp, #5]	@ zero_extendqisi2
+ 381              		.loc 1 137 29 view .LVU103
+ 382 0058 43EA0223 		orr	r3, r3, r2, lsl #8
+ 383              		.loc 1 137 57 view .LVU104
+ 384 005c 9DF80420 		ldrb	r2, [sp, #4]	@ zero_extendqisi2
+ 385              		.loc 1 137 48 view .LVU105
+ 386 0060 43EA0243 		orr	r3, r3, r2, lsl #16
+ 387              		.loc 1 137 17 view .LVU106
+ 388 0064 E362     		str	r3, [r4, #44]
+ 138:Core/Src/MS5837.c **** 	return MS5837_OK;
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 11
+
+
+ 389              		.loc 1 138 2 is_stmt 1 view .LVU107
+ 390              	.L28:
+ 139:Core/Src/MS5837.c **** }
+ 391              		.loc 1 139 1 is_stmt 0 view .LVU108
+ 392 0066 02B0     		add	sp, sp, #8
+ 393              	.LCFI10:
+ 394              		.cfi_remember_state
+ 395              		.cfi_def_cfa_offset 8
+ 396              		@ sp needed
+ 397 0068 10BD     		pop	{r4, pc}
+ 398              	.LVL35:
+ 399              	.L29:
+ 400              	.LCFI11:
+ 401              		.cfi_restore_state
+ 117:Core/Src/MS5837.c **** 	}
+ 402              		.loc 1 117 10 view .LVU109
+ 403 006a 4FF0FF30 		mov	r0, #-1
+ 404 006e FAE7     		b	.L28
+ 405              	.L30:
+ 124:Core/Src/MS5837.c **** 	}
+ 406              		.loc 1 124 10 view .LVU110
+ 407 0070 4FF0FF30 		mov	r0, #-1
+ 408 0074 F7E7     		b	.L28
+ 409              	.L31:
+ 129:Core/Src/MS5837.c **** 	}
+ 410              		.loc 1 129 10 view .LVU111
+ 411 0076 4FF0FF30 		mov	r0, #-1
+ 412 007a F4E7     		b	.L28
+ 413              	.L32:
+ 135:Core/Src/MS5837.c **** 	}
+ 414              		.loc 1 135 10 view .LVU112
+ 415 007c 4FF0FF30 		mov	r0, #-1
+ 416 0080 F1E7     		b	.L28
+ 417              		.cfi_endproc
+ 418              	.LFE70:
+ 420              		.section	.text.MS5837_Reset,"ax",%progbits
+ 421              		.align	1
+ 422              		.global	MS5837_Reset
+ 423              		.syntax unified
+ 424              		.thumb
+ 425              		.thumb_func
+ 427              	MS5837_Reset:
+ 428              	.LFB69:
+ 105:Core/Src/MS5837.c **** 	if(I2C_Write(MS5837_RESET) == HAL_OK){
+ 429              		.loc 1 105 31 is_stmt 1 view -0
+ 430              		.cfi_startproc
+ 431              		@ args = 0, pretend = 0, frame = 0
+ 432              		@ frame_needed = 0, uses_anonymous_args = 0
+ 433 0000 08B5     		push	{r3, lr}
+ 434              	.LCFI12:
+ 435              		.cfi_def_cfa_offset 8
+ 436              		.cfi_offset 3, -8
+ 437              		.cfi_offset 14, -4
+ 106:Core/Src/MS5837.c **** 		HAL_Delay(20);
+ 438              		.loc 1 106 2 view .LVU114
+ 106:Core/Src/MS5837.c **** 		HAL_Delay(20);
+ 439              		.loc 1 106 5 is_stmt 0 view .LVU115
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 12
+
+
+ 440 0002 1E20     		movs	r0, #30
+ 441 0004 FFF7FEFF 		bl	I2C_Write
+ 442              	.LVL36:
+ 106:Core/Src/MS5837.c **** 		HAL_Delay(20);
+ 443              		.loc 1 106 4 view .LVU116
+ 444 0008 20B9     		cbnz	r0, .L36
+ 107:Core/Src/MS5837.c **** 		return MS5837_OK;
+ 445              		.loc 1 107 3 is_stmt 1 view .LVU117
+ 446 000a 1420     		movs	r0, #20
+ 447 000c FFF7FEFF 		bl	HAL_Delay
+ 448              	.LVL37:
+ 108:Core/Src/MS5837.c **** 	}
+ 449              		.loc 1 108 3 view .LVU118
+ 108:Core/Src/MS5837.c **** 	}
+ 450              		.loc 1 108 10 is_stmt 0 view .LVU119
+ 451 0010 0020     		movs	r0, #0
+ 452              	.L35:
+ 111:Core/Src/MS5837.c **** 
+ 453              		.loc 1 111 1 view .LVU120
+ 454 0012 08BD     		pop	{r3, pc}
+ 455              	.L36:
+ 110:Core/Src/MS5837.c **** }
+ 456              		.loc 1 110 9 view .LVU121
+ 457 0014 4FF0FF30 		mov	r0, #-1
+ 458 0018 FBE7     		b	.L35
+ 459              		.cfi_endproc
+ 460              	.LFE69:
+ 462              		.section	.text.MS5837_Init,"ax",%progbits
+ 463              		.align	1
+ 464              		.global	MS5837_Init
+ 465              		.syntax unified
+ 466              		.thumb
+ 467              		.thumb_func
+ 469              	MS5837_Init:
+ 470              	.LVL38:
+ 471              	.LFB68:
+  75:Core/Src/MS5837.c **** 	MS5837->fluidDensity = 1029;
+ 472              		.loc 1 75 46 is_stmt 1 view -0
+ 473              		.cfi_startproc
+ 474              		@ args = 0, pretend = 0, frame = 8
+ 475              		@ frame_needed = 0, uses_anonymous_args = 0
+  75:Core/Src/MS5837.c **** 	MS5837->fluidDensity = 1029;
+ 476              		.loc 1 75 46 is_stmt 0 view .LVU123
+ 477 0000 30B5     		push	{r4, r5, lr}
+ 478              	.LCFI13:
+ 479              		.cfi_def_cfa_offset 12
+ 480              		.cfi_offset 4, -12
+ 481              		.cfi_offset 5, -8
+ 482              		.cfi_offset 14, -4
+ 483 0002 83B0     		sub	sp, sp, #12
+ 484              	.LCFI14:
+ 485              		.cfi_def_cfa_offset 24
+ 486 0004 0546     		mov	r5, r0
+  76:Core/Src/MS5837.c **** 	MS5837->model = MS5837_30BA;
+ 487              		.loc 1 76 2 is_stmt 1 view .LVU124
+  76:Core/Src/MS5837.c **** 	MS5837->model = MS5837_30BA;
+ 488              		.loc 1 76 23 is_stmt 0 view .LVU125
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 13
+
+
+ 489 0006 194B     		ldr	r3, .L46
+ 490 0008 4360     		str	r3, [r0, #4]	@ float
+  77:Core/Src/MS5837.c **** 
+ 491              		.loc 1 77 2 is_stmt 1 view .LVU126
+  77:Core/Src/MS5837.c **** 
+ 492              		.loc 1 77 16 is_stmt 0 view .LVU127
+ 493 000a 0023     		movs	r3, #0
+ 494 000c 0370     		strb	r3, [r0]
+  80:Core/Src/MS5837.c **** 		MS5837_Reset();
+ 495              		.loc 1 80 2 is_stmt 1 view .LVU128
+  80:Core/Src/MS5837.c **** 		MS5837_Reset();
+ 496              		.loc 1 80 7 is_stmt 0 view .LVU129
+ 497 000e 01E0     		b	.L39
+ 498              	.LVL39:
+ 499              	.L40:
+  81:Core/Src/MS5837.c **** 	}
+ 500              		.loc 1 81 3 is_stmt 1 view .LVU130
+ 501 0010 FFF7FEFF 		bl	MS5837_Reset
+ 502              	.LVL40:
+ 503              	.L39:
+  80:Core/Src/MS5837.c **** 		MS5837_Reset();
+ 504              		.loc 1 80 7 view .LVU131
+  80:Core/Src/MS5837.c **** 		MS5837_Reset();
+ 505              		.loc 1 80 9 is_stmt 0 view .LVU132
+ 506 0014 FFF7FEFF 		bl	MS5837_Reset
+ 507              	.LVL41:
+  80:Core/Src/MS5837.c **** 		MS5837_Reset();
+ 508              		.loc 1 80 7 view .LVU133
+ 509 0018 0028     		cmp	r0, #0
+ 510 001a F9D1     		bne	.L40
+  84:Core/Src/MS5837.c **** 	while(1){
+ 511              		.loc 1 84 2 is_stmt 1 view .LVU134
+ 512 001c 1420     		movs	r0, #20
+ 513 001e FFF7FEFF 		bl	HAL_Delay
+ 514              	.LVL42:
+ 515 0022 1EE0     		b	.L43
+ 516              	.LVL43:
+ 517              	.L42:
+ 518              	.LBB4:
+ 519              	.LBB5:
+ 520              	.LBB6:
+  88:Core/Src/MS5837.c **** 			I2C_Read(MS5837_PROM_READ + (i*2), buffer, 2);
+ 521              		.loc 1 88 4 discriminator 3 view .LVU135
+  89:Core/Src/MS5837.c **** 			MS5837->val.C[i] = buffer[1] | (buffer[0] << 8);
+ 522              		.loc 1 89 4 discriminator 3 view .LVU136
+ 523 0024 04F15000 		add	r0, r4, #80
+ 524 0028 4000     		lsls	r0, r0, #1
+ 525 002a 0222     		movs	r2, #2
+ 526 002c 01A9     		add	r1, sp, #4
+ 527 002e 00F0FE00 		and	r0, r0, #254
+ 528 0032 FFF7FEFF 		bl	I2C_Read
+ 529              	.LVL44:
+  90:Core/Src/MS5837.c **** 		}
+ 530              		.loc 1 90 4 discriminator 3 view .LVU137
+  90:Core/Src/MS5837.c **** 		}
+ 531              		.loc 1 90 29 is_stmt 0 discriminator 3 view .LVU138
+ 532 0036 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 14
+
+
+  90:Core/Src/MS5837.c **** 		}
+ 533              		.loc 1 90 42 discriminator 3 view .LVU139
+ 534 003a 9DF80420 		ldrb	r2, [sp, #4]	@ zero_extendqisi2
+  90:Core/Src/MS5837.c **** 		}
+ 535              		.loc 1 90 33 discriminator 3 view .LVU140
+ 536 003e 43EA0223 		orr	r3, r3, r2, lsl #8
+  90:Core/Src/MS5837.c **** 		}
+ 537              		.loc 1 90 21 discriminator 3 view .LVU141
+ 538 0042 04F10C02 		add	r2, r4, #12
+ 539 0046 25F81230 		strh	r3, [r5, r2, lsl #1]	@ movhi
+ 540              	.LBE6:
+  87:Core/Src/MS5837.c **** 			uint8_t buffer[2];
+ 541              		.loc 1 87 26 is_stmt 1 discriminator 3 view .LVU142
+  87:Core/Src/MS5837.c **** 			uint8_t buffer[2];
+ 542              		.loc 1 87 27 is_stmt 0 discriminator 3 view .LVU143
+ 543 004a 0134     		adds	r4, r4, #1
+ 544              	.LVL45:
+  87:Core/Src/MS5837.c **** 			uint8_t buffer[2];
+ 545              		.loc 1 87 27 discriminator 3 view .LVU144
+ 546 004c E4B2     		uxtb	r4, r4
+ 547              	.LVL46:
+ 548              	.L41:
+  87:Core/Src/MS5837.c **** 			uint8_t buffer[2];
+ 549              		.loc 1 87 20 is_stmt 1 discriminator 1 view .LVU145
+  87:Core/Src/MS5837.c **** 			uint8_t buffer[2];
+ 550              		.loc 1 87 3 is_stmt 0 discriminator 1 view .LVU146
+ 551 004e 062C     		cmp	r4, #6
+ 552 0050 E8D9     		bls	.L42
+ 553              	.LBE5:
+  92:Core/Src/MS5837.c **** 		uint8_t crcCalculated = crc4(MS5837->val.C);
+ 554              		.loc 1 92 3 is_stmt 1 view .LVU147
+  92:Core/Src/MS5837.c **** 		uint8_t crcCalculated = crc4(MS5837->val.C);
+ 555              		.loc 1 92 34 is_stmt 0 view .LVU148
+ 556 0052 2846     		mov	r0, r5
+ 557 0054 30F8184F 		ldrh	r4, [r0, #24]!
+ 558              	.LVL47:
+  92:Core/Src/MS5837.c **** 		uint8_t crcCalculated = crc4(MS5837->val.C);
+ 559              		.loc 1 92 11 view .LVU149
+ 560 0058 240B     		lsrs	r4, r4, #12
+ 561              	.LVL48:
+  93:Core/Src/MS5837.c **** 
+ 562              		.loc 1 93 3 is_stmt 1 view .LVU150
+  93:Core/Src/MS5837.c **** 
+ 563              		.loc 1 93 27 is_stmt 0 view .LVU151
+ 564 005a FFF7FEFF 		bl	crc4
+ 565              	.LVL49:
+  95:Core/Src/MS5837.c **** 			return MS5837_OK;
+ 566              		.loc 1 95 3 is_stmt 1 view .LVU152
+  95:Core/Src/MS5837.c **** 			return MS5837_OK;
+ 567              		.loc 1 95 6 is_stmt 0 view .LVU153
+ 568 005e 8442     		cmp	r4, r0
+ 569 0060 01D0     		beq	.L45
+ 570              	.LVL50:
+ 571              	.L43:
+  95:Core/Src/MS5837.c **** 			return MS5837_OK;
+ 572              		.loc 1 95 6 view .LVU154
+ 573              	.LBE4:
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 15
+
+
+  85:Core/Src/MS5837.c **** 		/* Read calibration data from PROM */
+ 574              		.loc 1 85 2 is_stmt 1 view .LVU155
+ 575              	.LBB8:
+  87:Core/Src/MS5837.c **** 			uint8_t buffer[2];
+ 576              		.loc 1 87 3 view .LVU156
+ 577              	.LBB7:
+  87:Core/Src/MS5837.c **** 			uint8_t buffer[2];
+ 578              		.loc 1 87 7 view .LVU157
+  87:Core/Src/MS5837.c **** 			uint8_t buffer[2];
+ 579              		.loc 1 87 15 is_stmt 0 view .LVU158
+ 580 0062 0024     		movs	r4, #0
+  87:Core/Src/MS5837.c **** 			uint8_t buffer[2];
+ 581              		.loc 1 87 3 view .LVU159
+ 582 0064 F3E7     		b	.L41
+ 583              	.LVL51:
+ 584              	.L45:
+  87:Core/Src/MS5837.c **** 			uint8_t buffer[2];
+ 585              		.loc 1 87 3 view .LVU160
+ 586              	.LBE7:
+  96:Core/Src/MS5837.c **** 		}
+ 587              		.loc 1 96 4 is_stmt 1 view .LVU161
+ 588              	.LBE8:
+ 102:Core/Src/MS5837.c **** 
+ 589              		.loc 1 102 1 is_stmt 0 view .LVU162
+ 590 0066 0020     		movs	r0, #0
+ 591              	.LVL52:
+ 102:Core/Src/MS5837.c **** 
+ 592              		.loc 1 102 1 view .LVU163
+ 593 0068 03B0     		add	sp, sp, #12
+ 594              	.LCFI15:
+ 595              		.cfi_def_cfa_offset 12
+ 596              		@ sp needed
+ 597 006a 30BD     		pop	{r4, r5, pc}
+ 598              	.LVL53:
+ 599              	.L47:
+ 102:Core/Src/MS5837.c **** 
+ 600              		.loc 1 102 1 view .LVU164
+ 601              		.align	2
+ 602              	.L46:
+ 603 006c 00A08044 		.word	1149280256
+ 604              		.cfi_endproc
+ 605              	.LFE68:
+ 607              		.global	__aeabi_i2f
+ 608              		.global	__aeabi_fdiv
+ 609              		.section	.text.MS5837_30BA_Calc,"ax",%progbits
+ 610              		.align	1
+ 611              		.global	MS5837_30BA_Calc
+ 612              		.syntax unified
+ 613              		.thumb
+ 614              		.thumb_func
+ 616              	MS5837_30BA_Calc:
+ 617              	.LVL54:
+ 618              	.LFB71:
+ 140:Core/Src/MS5837.c **** 
+ 141:Core/Src/MS5837.c **** void MS5837_30BA_Calc(MS5837_t *MS5837){
+ 619              		.loc 1 141 40 is_stmt 1 view -0
+ 620              		.cfi_startproc
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 16
+
+
+ 621              		@ args = 0, pretend = 0, frame = 0
+ 622              		@ frame_needed = 0, uses_anonymous_args = 0
+ 623              		.loc 1 141 40 is_stmt 0 view .LVU166
+ 624 0000 2DE9F84F 		push	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 625              	.LCFI16:
+ 626              		.cfi_def_cfa_offset 40
+ 627              		.cfi_offset 3, -40
+ 628              		.cfi_offset 4, -36
+ 629              		.cfi_offset 5, -32
+ 630              		.cfi_offset 6, -28
+ 631              		.cfi_offset 7, -24
+ 632              		.cfi_offset 8, -20
+ 633              		.cfi_offset 9, -16
+ 634              		.cfi_offset 10, -12
+ 635              		.cfi_offset 11, -8
+ 636              		.cfi_offset 14, -4
+ 637 0004 0546     		mov	r5, r0
+ 142:Core/Src/MS5837.c **** 	int32_t dT, OFFi, Ti,SENSi = 0;
+ 638              		.loc 1 142 2 is_stmt 1 view .LVU167
+ 639              	.LVL55:
+ 143:Core/Src/MS5837.c **** 	int64_t SENS, OFF, OFF2, SENS2 = 0;
+ 640              		.loc 1 143 2 view .LVU168
+ 144:Core/Src/MS5837.c **** 
+ 145:Core/Src/MS5837.c **** 	MS5837_ADC(MS5837);
+ 641              		.loc 1 145 2 view .LVU169
+ 642 0006 FFF7FEFF 		bl	MS5837_ADC
+ 643              	.LVL56:
+ 146:Core/Src/MS5837.c **** 
+ 147:Core/Src/MS5837.c **** 	dT = MS5837->val.D2 - ((uint32_t)MS5837->val.C[5] * 256l);
+ 644              		.loc 1 147 2 view .LVU170
+ 645              		.loc 1 147 18 is_stmt 0 view .LVU171
+ 646 000a EB6A     		ldr	r3, [r5, #44]
+ 647              		.loc 1 147 48 view .LVU172
+ 648 000c B5F82280 		ldrh	r8, [r5, #34]
+ 649              		.loc 1 147 22 view .LVU173
+ 650 0010 A3EB0828 		sub	r8, r3, r8, lsl #8
+ 651              	.LVL57:
+ 148:Core/Src/MS5837.c **** 	OFF = (int64_t)MS5837->val.C[2] * 65536l + ((int64_t)dT * (int64_t)MS5837->val.C[4]) / 128l;
+ 652              		.loc 1 148 2 is_stmt 1 view .LVU174
+ 653              		.loc 1 148 30 is_stmt 0 view .LVU175
+ 654 0014 AC8B     		ldrh	r4, [r5, #28]
+ 655              		.loc 1 148 34 view .LVU176
+ 656 0016 2404     		lsls	r4, r4, #16
+ 657              		.loc 1 148 46 view .LVU177
+ 658 0018 4FEAE877 		asr	r7, r8, #31
+ 659 001c 4146     		mov	r1, r8
+ 660              		.loc 1 148 82 view .LVU178
+ 661 001e 288C     		ldrh	r0, [r5, #32]
+ 662              		.loc 1 148 58 view .LVU179
+ 663 0020 A8FB0032 		umull	r3, r2, r8, r0
+ 664 0024 00FB0722 		mla	r2, r0, r7, r2
+ 665              		.loc 1 148 87 view .LVU180
+ 666 0028 9446     		mov	ip, r2
+ 667 002a 002A     		cmp	r2, #0
+ 668 002c 78DB     		blt	.L63
+ 669              	.L49:
+ 670 002e DB09     		lsrs	r3, r3, #7
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 17
+
+
+ 671 0030 43EA4C63 		orr	r3, r3, ip, lsl #25
+ 672 0034 4FEAEC1C 		asr	ip, ip, #7
+ 673              		.loc 1 148 6 view .LVU181
+ 674 0038 E418     		adds	r4, r4, r3
+ 675 003a 4CF1000C 		adc	ip, ip, #0
+ 676              	.LVL58:
+ 149:Core/Src/MS5837.c **** 	SENS = (int64_t)MS5837->val.C[1] * 32768l + ((int64_t)dT * (int64_t)MS5837->val.C[3]) / 256l;
+ 677              		.loc 1 149 2 is_stmt 1 view .LVU182
+ 678              		.loc 1 149 31 is_stmt 0 view .LVU183
+ 679 003e 6A8B     		ldrh	r2, [r5, #26]
+ 680              		.loc 1 149 35 view .LVU184
+ 681 0040 D203     		lsls	r2, r2, #15
+ 682              		.loc 1 149 83 view .LVU185
+ 683 0042 EE8B     		ldrh	r6, [r5, #30]
+ 684              		.loc 1 149 59 view .LVU186
+ 685 0044 A1FB0630 		umull	r3, r0, r1, r6
+ 686 0048 06FB0700 		mla	r0, r6, r7, r0
+ 687              		.loc 1 149 88 view .LVU187
+ 688 004c 8646     		mov	lr, r0
+ 689 004e 0028     		cmp	r0, #0
+ 690 0050 6ADB     		blt	.L64
+ 691              	.L50:
+ 692 0052 1B0A     		lsrs	r3, r3, #8
+ 693 0054 43EA0E63 		orr	r3, r3, lr, lsl #24
+ 694 0058 4FEA2E2E 		asr	lr, lr, #8
+ 695              		.loc 1 149 7 view .LVU188
+ 696 005c D218     		adds	r2, r2, r3
+ 697 005e 4EF1000E 		adc	lr, lr, #0
+ 698              	.LVL59:
+ 150:Core/Src/MS5837.c **** 
+ 151:Core/Src/MS5837.c **** 	MS5837->val.TEMP = 2000l + ((int64_t)dT * MS5837->val.C[6]) / 8388608LL;
+ 699              		.loc 1 151 2 is_stmt 1 view .LVU189
+ 700              		.loc 1 151 57 is_stmt 0 view .LVU190
+ 701 0062 AE8C     		ldrh	r6, [r5, #36]
+ 702              		.loc 1 151 42 view .LVU191
+ 703 0064 A1FB0603 		umull	r0, r3, r1, r6
+ 704 0068 06FB0733 		mla	r3, r6, r7, r3
+ 705              		.loc 1 151 62 view .LVU192
+ 706 006c 1E46     		mov	r6, r3
+ 707 006e 002B     		cmp	r3, #0
+ 708 0070 5EDB     		blt	.L65
+ 709              	.L51:
+ 710 0072 C00D     		lsrs	r0, r0, #23
+ 711 0074 40EA4620 		orr	r0, r0, r6, lsl #9
+ 712              		.loc 1 151 27 view .LVU193
+ 713 0078 00F5FA60 		add	r0, r0, #2000
+ 714              		.loc 1 151 19 view .LVU194
+ 715 007c 2861     		str	r0, [r5, #16]
+ 152:Core/Src/MS5837.c **** 	MS5837->val.P = (((int64_t)MS5837->val.D1 * SENS) / 2097152l - OFF) / 8192l;
+ 716              		.loc 1 152 2 is_stmt 1 view .LVU195
+ 717              		.loc 1 152 40 is_stmt 0 view .LVU196
+ 718 007e AE6A     		ldr	r6, [r5, #40]
+ 719              		.loc 1 152 20 view .LVU197
+ 720 0080 3346     		mov	r3, r6
+ 721              		.loc 1 152 44 view .LVU198
+ 722 0082 A6FB029B 		umull	r9, fp, r6, r2
+ 723 0086 06FB0EBB 		mla	fp, r6, lr, fp
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 18
+
+
+ 724              		.loc 1 152 52 view .LVU199
+ 725 008a DA46     		mov	r10, fp
+ 726 008c BBF1000F 		cmp	fp, #0
+ 727 0090 53DB     		blt	.L66
+ 728              	.L52:
+ 729 0092 4FEA5959 		lsr	r9, r9, #21
+ 730 0096 49EACA29 		orr	r9, r9, r10, lsl #11
+ 731 009a 4FEA6A5A 		asr	r10, r10, #21
+ 732              		.loc 1 152 63 view .LVU200
+ 733 009e B9EB0409 		subs	r9, r9, r4
+ 734 00a2 6AEB0C0A 		sbc	r10, r10, ip
+ 735              		.loc 1 152 70 view .LVU201
+ 736 00a6 D346     		mov	fp, r10
+ 737 00a8 BAF1000F 		cmp	r10, #0
+ 738 00ac 4CDB     		blt	.L67
+ 739              	.L53:
+ 740 00ae 4FEA5939 		lsr	r9, r9, #13
+ 741 00b2 49EACB49 		orr	r9, r9, fp, lsl #19
+ 742              		.loc 1 152 16 view .LVU202
+ 743 00b6 C5F81490 		str	r9, [r5, #20]
+ 153:Core/Src/MS5837.c **** 
+ 154:Core/Src/MS5837.c **** 	if((MS5837->val.TEMP/100)<20){
+ 744              		.loc 1 154 2 is_stmt 1 view .LVU203
+ 745              		.loc 1 154 4 is_stmt 0 view .LVU204
+ 746 00ba B0F5FA6F 		cmp	r0, #2000
+ 747 00be 52DA     		bge	.L54
+ 155:Core/Src/MS5837.c **** 		Ti = (3*(int64_t)dT*(int64_t)dT)/8589934592LL;
+ 748              		.loc 1 155 3 is_stmt 1 view .LVU205
+ 749              		.loc 1 155 22 is_stmt 0 view .LVU206
+ 750 00c0 08FB07F7 		mul	r7, r8, r7
+ 751 00c4 A1FB01A1 		umull	r10, r1, r1, r1
+ 752 00c8 01EB4707 		add	r7, r1, r7, lsl #1
+ 753 00cc 1AEB0A09 		adds	r9, r10, r10
+ 754 00d0 47EB0701 		adc	r1, r7, r7
+ 755 00d4 19EB0A09 		adds	r9, r9, r10
+ 756 00d8 47EB0107 		adc	r7, r7, r1
+ 757              		.loc 1 155 35 view .LVU207
+ 758 00dc 3946     		mov	r1, r7
+ 759 00de 002F     		cmp	r7, #0
+ 760 00e0 39DB     		blt	.L68
+ 761              	.L55:
+ 762              		.loc 1 155 6 view .LVU208
+ 763 00e2 4FEA6109 		asr	r9, r1, #1
+ 764              	.LVL60:
+ 156:Core/Src/MS5837.c **** 		OFFi = (3*(MS5837->val.TEMP-2000l)*(MS5837->val.TEMP-2000l))/2;
+ 765              		.loc 1 156 3 is_stmt 1 view .LVU209
+ 766              		.loc 1 156 30 is_stmt 0 view .LVU210
+ 767 00e6 A0F5FA61 		sub	r1, r0, #2000
+ 768              		.loc 1 156 37 view .LVU211
+ 769 00ea 01FB01F1 		mul	r1, r1, r1
+ 770 00ee 01EB4107 		add	r7, r1, r1, lsl #1
+ 771              		.loc 1 156 8 view .LVU212
+ 772 00f2 07EBD777 		add	r7, r7, r7, lsr #31
+ 773 00f6 7F10     		asrs	r7, r7, #1
+ 774              	.LVL61:
+ 157:Core/Src/MS5837.c **** 		SENSi = (5*(MS5837->val.TEMP-2000l)*(MS5837->val.TEMP-2000l))/8;
+ 775              		.loc 1 157 3 is_stmt 1 view .LVU213
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 19
+
+
+ 776              		.loc 1 157 38 is_stmt 0 view .LVU214
+ 777 00f8 01EB8101 		add	r1, r1, r1, lsl #2
+ 778              		.loc 1 157 9 view .LVU215
+ 779 00fc 8846     		mov	r8, r1
+ 780              	.LVL62:
+ 781              		.loc 1 157 9 view .LVU216
+ 782 00fe 0029     		cmp	r1, #0
+ 783 0100 2EDB     		blt	.L69
+ 784              	.L56:
+ 785 0102 4FEAE808 		asr	r8, r8, #3
+ 786              	.LVL63:
+ 158:Core/Src/MS5837.c **** 
+ 159:Core/Src/MS5837.c **** 		if((MS5837->val.TEMP/100) < -15){
+ 787              		.loc 1 159 3 is_stmt 1 view .LVU217
+ 788              		.loc 1 159 5 is_stmt 0 view .LVU218
+ 789 0106 10F5C86F 		cmn	r0, #1600
+ 790 010a 40DC     		bgt	.L57
+ 160:Core/Src/MS5837.c **** 			OFFi = OFFi + 7 * (MS5837->val.TEMP + 1500l) * (MS5837->val.TEMP + 1500l);
+ 791              		.loc 1 160 4 is_stmt 1 view .LVU219
+ 792              		.loc 1 160 40 is_stmt 0 view .LVU220
+ 793 010c 00F2DC51 		addw	r1, r0, #1500
+ 794              		.loc 1 160 49 view .LVU221
+ 795 0110 01FB01F1 		mul	r1, r1, r1
+ 796 0114 C1EBC10A 		rsb	r10, r1, r1, lsl #3
+ 797              		.loc 1 160 9 view .LVU222
+ 798 0118 5744     		add	r7, r7, r10
+ 799              	.LVL64:
+ 161:Core/Src/MS5837.c **** 			SENSi = SENSi + 4 * (MS5837->val.TEMP + 1500l) * (MS5837->val.TEMP + 1500l);
+ 800              		.loc 1 161 4 is_stmt 1 view .LVU223
+ 801              		.loc 1 161 10 is_stmt 0 view .LVU224
+ 802 011a 08EB8108 		add	r8, r8, r1, lsl #2
+ 803              	.LVL65:
+ 804              		.loc 1 161 10 view .LVU225
+ 805 011e 36E0     		b	.L57
+ 806              	.LVL66:
+ 807              	.L63:
+ 148:Core/Src/MS5837.c **** 	SENS = (int64_t)MS5837->val.C[1] * 32768l + ((int64_t)dT * (int64_t)MS5837->val.C[3]) / 256l;
+ 808              		.loc 1 148 87 view .LVU226
+ 809 0120 7F33     		adds	r3, r3, #127
+ 810 0122 42F1000C 		adc	ip, r2, #0
+ 811 0126 82E7     		b	.L49
+ 812              	.LVL67:
+ 813              	.L64:
+ 149:Core/Src/MS5837.c **** 
+ 814              		.loc 1 149 88 view .LVU227
+ 815 0128 FF33     		adds	r3, r3, #255
+ 816 012a 40F1000E 		adc	lr, r0, #0
+ 817 012e 90E7     		b	.L50
+ 818              	.LVL68:
+ 819              	.L65:
+ 151:Core/Src/MS5837.c **** 	MS5837->val.P = (((int64_t)MS5837->val.D1 * SENS) / 2097152l - OFF) / 8192l;
+ 820              		.loc 1 151 62 view .LVU228
+ 821 0130 374E     		ldr	r6, .L74
+ 822 0132 8019     		adds	r0, r0, r6
+ 823 0134 43F10006 		adc	r6, r3, #0
+ 824 0138 9BE7     		b	.L51
+ 825              	.L66:
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 20
+
+
+ 152:Core/Src/MS5837.c **** 
+ 826              		.loc 1 152 52 view .LVU229
+ 827 013a DFF8D8A0 		ldr	r10, .L74+4
+ 828 013e 19EB0A09 		adds	r9, r9, r10
+ 829 0142 4BF1000A 		adc	r10, fp, #0
+ 830 0146 A4E7     		b	.L52
+ 831              	.L67:
+ 152:Core/Src/MS5837.c **** 
+ 832              		.loc 1 152 70 view .LVU230
+ 833 0148 41F6FF7B 		movw	fp, #8191
+ 834 014c 19EB0B09 		adds	r9, r9, fp
+ 835 0150 4AF1000B 		adc	fp, r10, #0
+ 836 0154 ABE7     		b	.L53
+ 837              	.LVL69:
+ 838              	.L68:
+ 155:Core/Src/MS5837.c **** 		OFFi = (3*(MS5837->val.TEMP-2000l)*(MS5837->val.TEMP-2000l))/2;
+ 839              		.loc 1 155 35 view .LVU231
+ 840 0156 19F1FF39 		adds	r9, r9, #-1
+ 841 015a 47F10101 		adc	r1, r7, #1
+ 842 015e C0E7     		b	.L55
+ 843              	.LVL70:
+ 844              	.L69:
+ 157:Core/Src/MS5837.c **** 
+ 845              		.loc 1 157 9 view .LVU232
+ 846 0160 01F10708 		add	r8, r1, #7
+ 847 0164 CDE7     		b	.L56
+ 848              	.LVL71:
+ 849              	.L54:
+ 162:Core/Src/MS5837.c **** 		}
+ 163:Core/Src/MS5837.c **** 	}
+ 164:Core/Src/MS5837.c **** 	else{
+ 165:Core/Src/MS5837.c **** 		Ti = (2*(int64_t)dT*(int64_t)dT)/137438953472LL;
+ 850              		.loc 1 165 3 is_stmt 1 view .LVU233
+ 851              		.loc 1 165 22 is_stmt 0 view .LVU234
+ 852 0166 08FB07F7 		mul	r7, r8, r7
+ 853 016a A1FB0118 		umull	r1, r8, r1, r1
+ 854              	.LVL72:
+ 855              		.loc 1 165 22 view .LVU235
+ 856 016e 08EB4707 		add	r7, r8, r7, lsl #1
+ 857              		.loc 1 165 35 view .LVU236
+ 858 0172 B946     		mov	r9, r7
+ 859 0174 002F     		cmp	r7, #0
+ 860 0176 39DB     		blt	.L70
+ 861              	.L58:
+ 862              		.loc 1 165 6 view .LVU237
+ 863 0178 4FEA2919 		asr	r9, r9, #4
+ 864              	.LVL73:
+ 166:Core/Src/MS5837.c **** 		OFFi = ((MS5837->val.TEMP-2000l)*(MS5837->val.TEMP-2000l))/16;
+ 865              		.loc 1 166 3 is_stmt 1 view .LVU238
+ 866              		.loc 1 166 28 is_stmt 0 view .LVU239
+ 867 017c A0F5FA67 		sub	r7, r0, #2000
+ 868              		.loc 1 166 35 view .LVU240
+ 869 0180 07FB07F7 		mul	r7, r7, r7
+ 870              		.loc 1 166 8 view .LVU241
+ 871 0184 002F     		cmp	r7, #0
+ 872 0186 35DB     		blt	.L71
+ 873              	.L59:
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 21
+
+
+ 874 0188 3F11     		asrs	r7, r7, #4
+ 875              	.LVL74:
+ 167:Core/Src/MS5837.c **** 		SENSi = 0;
+ 876              		.loc 1 167 3 is_stmt 1 view .LVU242
+ 877              		.loc 1 167 9 is_stmt 0 view .LVU243
+ 878 018a 4FF00008 		mov	r8, #0
+ 879              	.LVL75:
+ 880              	.L57:
+ 168:Core/Src/MS5837.c **** 	}
+ 169:Core/Src/MS5837.c **** 
+ 170:Core/Src/MS5837.c **** 	OFF2 = OFF-OFFi;
+ 881              		.loc 1 170 2 is_stmt 1 view .LVU244
+ 882              		.loc 1 170 7 is_stmt 0 view .LVU245
+ 883 018e E11B     		subs	r1, r4, r7
+ 884 0190 6CEBE77C 		sbc	ip, ip, r7, asr #31
+ 885              	.LVL76:
+ 171:Core/Src/MS5837.c **** 	SENS2 = SENS-SENSi;
+ 886              		.loc 1 171 2 is_stmt 1 view .LVU246
+ 887              		.loc 1 171 8 is_stmt 0 view .LVU247
+ 888 0194 B2EB0802 		subs	r2, r2, r8
+ 889              	.LVL77:
+ 890              		.loc 1 171 8 view .LVU248
+ 891 0198 6EEBE87E 		sbc	lr, lr, r8, asr #31
+ 892              	.LVL78:
+ 172:Core/Src/MS5837.c **** 
+ 173:Core/Src/MS5837.c **** 	MS5837->val.TEMP = (MS5837->val.TEMP - Ti);
+ 893              		.loc 1 173 2 is_stmt 1 view .LVU249
+ 894              		.loc 1 173 39 is_stmt 0 view .LVU250
+ 895 019c A0EB0900 		sub	r0, r0, r9
+ 896              		.loc 1 173 19 view .LVU251
+ 897 01a0 2861     		str	r0, [r5, #16]
+ 174:Core/Src/MS5837.c **** 
+ 175:Core/Src/MS5837.c **** 	MS5837->val.P = ((MS5837->val.D1 * SENS2) / 2097152l - OFF2)/ 8192l;
+ 898              		.loc 1 175 2 is_stmt 1 view .LVU252
+ 899              		.loc 1 175 35 is_stmt 0 view .LVU253
+ 900 01a2 A3FB0232 		umull	r3, r2, r3, r2
+ 901              	.LVL79:
+ 902              		.loc 1 175 35 view .LVU254
+ 903 01a6 06FB0E22 		mla	r2, r6, lr, r2
+ 904              		.loc 1 175 44 view .LVU255
+ 905 01aa 1646     		mov	r6, r2
+ 906 01ac 002A     		cmp	r2, #0
+ 907 01ae 23DB     		blt	.L72
+ 908              	.L60:
+ 909              		.loc 1 175 44 view .LVU256
+ 910 01b0 5C0D     		lsrs	r4, r3, #21
+ 911 01b2 44EAC624 		orr	r4, r4, r6, lsl #11
+ 912 01b6 7615     		asrs	r6, r6, #21
+ 913              		.loc 1 175 55 view .LVU257
+ 914 01b8 641A     		subs	r4, r4, r1
+ 915 01ba 66EB0C0C 		sbc	ip, r6, ip
+ 916              	.LVL80:
+ 917              		.loc 1 175 62 view .LVU258
+ 918 01be 6346     		mov	r3, ip
+ 919 01c0 BCF1000F 		cmp	ip, #0
+ 920 01c4 1DDB     		blt	.L73
+ 921              	.L61:
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 22
+
+
+ 922 01c6 640B     		lsrs	r4, r4, #13
+ 923 01c8 44EAC344 		orr	r4, r4, r3, lsl #19
+ 924              		.loc 1 175 16 view .LVU259
+ 925 01cc 6C61     		str	r4, [r5, #20]
+ 176:Core/Src/MS5837.c **** 
+ 177:Core/Src/MS5837.c **** 	MS5837->temperature = (float) MS5837->val.TEMP / 100.0f;             // result of temperature in d
+ 926              		.loc 1 177 2 is_stmt 1 view .LVU260
+ 927              		.loc 1 177 24 is_stmt 0 view .LVU261
+ 928 01ce FFF7FEFF 		bl	__aeabi_i2f
+ 929              	.LVL81:
+ 930              		.loc 1 177 49 view .LVU262
+ 931 01d2 1149     		ldr	r1, .L74+8
+ 932 01d4 FFF7FEFF 		bl	__aeabi_fdiv
+ 933              	.LVL82:
+ 934              		.loc 1 177 22 view .LVU263
+ 935 01d8 A860     		str	r0, [r5, #8]	@ float
+ 178:Core/Src/MS5837.c **** 	MS5837->pressure = (float) MS5837->val.P / 10.0f;                 // BAR30 result of pressure in m
+ 936              		.loc 1 178 2 is_stmt 1 view .LVU264
+ 937              		.loc 1 178 21 is_stmt 0 view .LVU265
+ 938 01da 2046     		mov	r0, r4
+ 939 01dc FFF7FEFF 		bl	__aeabi_i2f
+ 940              	.LVL83:
+ 941              		.loc 1 178 43 view .LVU266
+ 942 01e0 0E49     		ldr	r1, .L74+12
+ 943 01e2 FFF7FEFF 		bl	__aeabi_fdiv
+ 944              	.LVL84:
+ 945              		.loc 1 178 19 view .LVU267
+ 946 01e6 E860     		str	r0, [r5, #12]	@ float
+ 179:Core/Src/MS5837.c **** 
+ 180:Core/Src/MS5837.c **** }
+ 947              		.loc 1 180 1 view .LVU268
+ 948 01e8 BDE8F88F 		pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 949              	.LVL85:
+ 950              	.L70:
+ 165:Core/Src/MS5837.c **** 		OFFi = ((MS5837->val.TEMP-2000l)*(MS5837->val.TEMP-2000l))/16;
+ 951              		.loc 1 165 35 view .LVU269
+ 952 01ec 0139     		subs	r1, r1, #1
+ 953 01ee 47F10F09 		adc	r9, r7, #15
+ 954 01f2 C1E7     		b	.L58
+ 955              	.LVL86:
+ 956              	.L71:
+ 166:Core/Src/MS5837.c **** 		SENSi = 0;
+ 957              		.loc 1 166 8 view .LVU270
+ 958 01f4 0F37     		adds	r7, r7, #15
+ 959 01f6 C7E7     		b	.L59
+ 960              	.LVL87:
+ 961              	.L72:
+ 175:Core/Src/MS5837.c **** 
+ 962              		.loc 1 175 44 view .LVU271
+ 963 01f8 064C     		ldr	r4, .L74+4
+ 175:Core/Src/MS5837.c **** 
+ 964              		.loc 1 175 44 view .LVU272
+ 965 01fa 1B19     		adds	r3, r3, r4
+ 966 01fc 42F10006 		adc	r6, r2, #0
+ 967 0200 D6E7     		b	.L60
+ 968              	.LVL88:
+ 969              	.L73:
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 23
+
+
+ 175:Core/Src/MS5837.c **** 
+ 970              		.loc 1 175 62 view .LVU273
+ 971 0202 41F6FF73 		movw	r3, #8191
+ 972 0206 E418     		adds	r4, r4, r3
+ 973 0208 4CF10003 		adc	r3, ip, #0
+ 974 020c DBE7     		b	.L61
+ 975              	.L75:
+ 976 020e 00BF     		.align	2
+ 977              	.L74:
+ 978 0210 FFFF7F00 		.word	8388607
+ 979 0214 FFFF1F00 		.word	2097151
+ 980 0218 0000C842 		.word	1120403456
+ 981 021c 00002041 		.word	1092616192
+ 982              		.cfi_endproc
+ 983              	.LFE71:
+ 985              		.section	.text.MS5837_02BA_Calc,"ax",%progbits
+ 986              		.align	1
+ 987              		.global	MS5837_02BA_Calc
+ 988              		.syntax unified
+ 989              		.thumb
+ 990              		.thumb_func
+ 992              	MS5837_02BA_Calc:
+ 993              	.LVL89:
+ 994              	.LFB72:
+ 181:Core/Src/MS5837.c **** 
+ 182:Core/Src/MS5837.c **** void MS5837_02BA_Calc(MS5837_t *MS5837){
+ 995              		.loc 1 182 40 is_stmt 1 view -0
+ 996              		.cfi_startproc
+ 997              		@ args = 0, pretend = 0, frame = 8
+ 998              		@ frame_needed = 0, uses_anonymous_args = 0
+ 999              		.loc 1 182 40 is_stmt 0 view .LVU275
+ 1000 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 1001              	.LCFI17:
+ 1002              		.cfi_def_cfa_offset 36
+ 1003              		.cfi_offset 4, -36
+ 1004              		.cfi_offset 5, -32
+ 1005              		.cfi_offset 6, -28
+ 1006              		.cfi_offset 7, -24
+ 1007              		.cfi_offset 8, -20
+ 1008              		.cfi_offset 9, -16
+ 1009              		.cfi_offset 10, -12
+ 1010              		.cfi_offset 11, -8
+ 1011              		.cfi_offset 14, -4
+ 1012 0004 83B0     		sub	sp, sp, #12
+ 1013              	.LCFI18:
+ 1014              		.cfi_def_cfa_offset 48
+ 1015 0006 0446     		mov	r4, r0
+ 183:Core/Src/MS5837.c **** 	int32_t dT, OFFi, Ti,SENSi = 0;
+ 1016              		.loc 1 183 2 is_stmt 1 view .LVU276
+ 1017              	.LVL90:
+ 184:Core/Src/MS5837.c **** 	int64_t SENS, OFF, OFF2, SENS2 = 0;
+ 1018              		.loc 1 184 2 view .LVU277
+ 185:Core/Src/MS5837.c **** 
+ 186:Core/Src/MS5837.c **** 	MS5837_ADC(MS5837);
+ 1019              		.loc 1 186 2 view .LVU278
+ 1020 0008 FFF7FEFF 		bl	MS5837_ADC
+ 1021              	.LVL91:
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 24
+
+
+ 187:Core/Src/MS5837.c **** 
+ 188:Core/Src/MS5837.c **** 	dT = MS5837->val.D2 - ((uint32_t)MS5837->val.C[5] * 256l);
+ 1022              		.loc 1 188 2 view .LVU279
+ 1023              		.loc 1 188 18 is_stmt 0 view .LVU280
+ 1024 000c E36A     		ldr	r3, [r4, #44]
+ 1025              		.loc 1 188 48 view .LVU281
+ 1026 000e B4F82290 		ldrh	r9, [r4, #34]
+ 1027              		.loc 1 188 22 view .LVU282
+ 1028 0012 A3EB0929 		sub	r9, r3, r9, lsl #8
+ 1029              	.LVL92:
+ 189:Core/Src/MS5837.c **** 	OFF = (int64_t)MS5837->val.C[2] * 131072l + ((int64_t)dT * (int64_t)MS5837->val.C[4]) / 64l;
+ 1030              		.loc 1 189 2 is_stmt 1 view .LVU283
+ 1031              		.loc 1 189 30 is_stmt 0 view .LVU284
+ 1032 0016 B4F81CC0 		ldrh	ip, [r4, #28]
+ 1033              		.loc 1 189 34 view .LVU285
+ 1034 001a 4FEADC37 		lsr	r7, ip, #15
+ 1035 001e 4FEA4C4C 		lsl	ip, ip, #17
+ 1036              		.loc 1 189 47 view .LVU286
+ 1037 0022 4FEAE978 		asr	r8, r9, #31
+ 1038 0026 CE46     		mov	lr, r9
+ 1039              		.loc 1 189 83 view .LVU287
+ 1040 0028 218C     		ldrh	r1, [r4, #32]
+ 1041              		.loc 1 189 59 view .LVU288
+ 1042 002a A9FB0132 		umull	r3, r2, r9, r1
+ 1043 002e 01FB0822 		mla	r2, r1, r8, r2
+ 1044              		.loc 1 189 88 view .LVU289
+ 1045 0032 1146     		mov	r1, r2
+ 1046 0034 002A     		cmp	r2, #0
+ 1047 0036 C0F2A280 		blt	.L90
+ 1048              	.L77:
+ 1049 003a 9B09     		lsrs	r3, r3, #6
+ 1050 003c 43EA8163 		orr	r3, r3, r1, lsl #26
+ 1051              		.loc 1 189 6 view .LVU290
+ 1052 0040 1CEB030C 		adds	ip, ip, r3
+ 1053 0044 47EBA117 		adc	r7, r7, r1, asr #6
+ 1054              	.LVL93:
+ 190:Core/Src/MS5837.c **** 	SENS = (int64_t)MS5837->val.C[1] * 65536l + ((int64_t)dT * (int64_t)MS5837->val.C[3]) / 128l;
+ 1055              		.loc 1 190 2 is_stmt 1 view .LVU291
+ 1056              		.loc 1 190 31 is_stmt 0 view .LVU292
+ 1057 0048 628B     		ldrh	r2, [r4, #26]
+ 1058              		.loc 1 190 35 view .LVU293
+ 1059 004a 1204     		lsls	r2, r2, #16
+ 1060              		.loc 1 190 83 view .LVU294
+ 1061 004c E08B     		ldrh	r0, [r4, #30]
+ 1062              		.loc 1 190 59 view .LVU295
+ 1063 004e AEFB0031 		umull	r3, r1, lr, r0
+ 1064 0052 00FB0811 		mla	r1, r0, r8, r1
+ 1065              		.loc 1 190 88 view .LVU296
+ 1066 0056 0E46     		mov	r6, r1
+ 1067 0058 0029     		cmp	r1, #0
+ 1068 005a C0F29480 		blt	.L91
+ 1069              	.L78:
+ 1070 005e DB09     		lsrs	r3, r3, #7
+ 1071 0060 43EA4663 		orr	r3, r3, r6, lsl #25
+ 1072 0064 F611     		asrs	r6, r6, #7
+ 1073              		.loc 1 190 7 view .LVU297
+ 1074 0066 D218     		adds	r2, r2, r3
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 25
+
+
+ 1075 0068 46F10006 		adc	r6, r6, #0
+ 1076              	.LVL94:
+ 191:Core/Src/MS5837.c **** 
+ 192:Core/Src/MS5837.c **** 	MS5837->val.TEMP = 2000l + ((int64_t)dT * MS5837->val.C[6]) / 8388608l;
+ 1077              		.loc 1 192 2 is_stmt 1 view .LVU298
+ 1078              		.loc 1 192 57 is_stmt 0 view .LVU299
+ 1079 006c A38C     		ldrh	r3, [r4, #36]
+ 1080              		.loc 1 192 42 view .LVU300
+ 1081 006e AEFB0310 		umull	r1, r0, lr, r3
+ 1082 0072 03FB0803 		mla	r3, r3, r8, r0
+ 1083              		.loc 1 192 62 view .LVU301
+ 1084 0076 1846     		mov	r0, r3
+ 1085 0078 002B     		cmp	r3, #0
+ 1086 007a C0F28880 		blt	.L92
+ 1087              	.L79:
+ 1088 007e C90D     		lsrs	r1, r1, #23
+ 1089 0080 41EA4021 		orr	r1, r1, r0, lsl #9
+ 1090              		.loc 1 192 27 view .LVU302
+ 1091 0084 01F5FA61 		add	r1, r1, #2000
+ 1092              		.loc 1 192 19 view .LVU303
+ 1093 0088 2161     		str	r1, [r4, #16]
+ 193:Core/Src/MS5837.c **** 	MS5837->val.P = (((int64_t)MS5837->val.D1 * SENS) / 2097152l - OFF) / 32768l;
+ 1094              		.loc 1 193 2 is_stmt 1 view .LVU304
+ 1095              		.loc 1 193 40 is_stmt 0 view .LVU305
+ 1096 008a D4F828A0 		ldr	r10, [r4, #40]
+ 1097              		.loc 1 193 20 view .LVU306
+ 1098 008e CDF800A0 		str	r10, [sp]
+ 1099              		.loc 1 193 44 view .LVU307
+ 1100 0092 AAFB023B 		umull	r3, fp, r10, r2
+ 1101 0096 0AFB06BB 		mla	fp, r10, r6, fp
+ 1102              		.loc 1 193 52 view .LVU308
+ 1103 009a 5846     		mov	r0, fp
+ 1104 009c BBF1000F 		cmp	fp, #0
+ 1105 00a0 7ADB     		blt	.L93
+ 1106              	.L80:
+ 1107 00a2 5B0D     		lsrs	r3, r3, #21
+ 1108 00a4 43EAC023 		orr	r3, r3, r0, lsl #11
+ 1109 00a8 4015     		asrs	r0, r0, #21
+ 1110              		.loc 1 193 63 view .LVU309
+ 1111 00aa B3EB0C03 		subs	r3, r3, ip
+ 1112 00ae 60EB0700 		sbc	r0, r0, r7
+ 1113              		.loc 1 193 70 view .LVU310
+ 1114 00b2 8346     		mov	fp, r0
+ 1115 00b4 0028     		cmp	r0, #0
+ 1116 00b6 74DB     		blt	.L94
+ 1117              	.L81:
+ 1118 00b8 DB0B     		lsrs	r3, r3, #15
+ 1119 00ba 43EA4B43 		orr	r3, r3, fp, lsl #17
+ 1120              		.loc 1 193 16 view .LVU311
+ 1121 00be 6361     		str	r3, [r4, #20]
+ 194:Core/Src/MS5837.c **** 
+ 195:Core/Src/MS5837.c **** 	if((MS5837->val.TEMP/100)<20){
+ 1122              		.loc 1 195 2 is_stmt 1 view .LVU312
+ 1123              		.loc 1 195 4 is_stmt 0 view .LVU313
+ 1124 00c0 B1F5FA6F 		cmp	r1, #2000
+ 1125 00c4 7DDA     		bge	.L88
+ 196:Core/Src/MS5837.c **** 		Ti = (11*(int64_t)dT*(int64_t)dT)/(34359738368LL);
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 26
+
+
+ 1126              		.loc 1 196 3 is_stmt 1 view .LVU314
+ 1127              		.loc 1 196 23 is_stmt 0 view .LVU315
+ 1128 00c6 09FB08F8 		mul	r8, r9, r8
+ 1129 00ca AEFB0E0E 		umull	r0, lr, lr, lr
+ 1130 00ce 0EEB4808 		add	r8, lr, r8, lsl #1
+ 1131 00d2 0318     		adds	r3, r0, r0
+ 1132 00d4 48EB080E 		adc	lr, r8, r8
+ 1133 00d8 1B18     		adds	r3, r3, r0
+ 1134 00da 48EB0E0E 		adc	lr, r8, lr
+ 1135 00de 4FEA8E0E 		lsl	lr, lr, #2
+ 1136 00e2 4EEA937E 		orr	lr, lr, r3, lsr #30
+ 1137 00e6 9B00     		lsls	r3, r3, #2
+ 1138 00e8 1B1A     		subs	r3, r3, r0
+ 1139 00ea 6EEB080E 		sbc	lr, lr, r8
+ 1140              		.loc 1 196 36 view .LVU316
+ 1141 00ee 7046     		mov	r0, lr
+ 1142 00f0 BEF1000F 		cmp	lr, #0
+ 1143 00f4 5CDB     		blt	.L95
+ 1144              	.L83:
+ 1145              		.loc 1 196 6 view .LVU317
+ 1146 00f6 C310     		asrs	r3, r0, #3
+ 1147 00f8 0193     		str	r3, [sp, #4]
+ 1148              	.LVL95:
+ 197:Core/Src/MS5837.c **** 		OFFi = (31*(MS5837->val.TEMP-2000l)*(MS5837->val.TEMP-2000l))/8;
+ 1149              		.loc 1 197 3 is_stmt 1 view .LVU318
+ 1150              		.loc 1 197 31 is_stmt 0 view .LVU319
+ 1151 00fa A1F5FA63 		sub	r3, r1, #2000
+ 1152              	.LVL96:
+ 1153              		.loc 1 197 38 view .LVU320
+ 1154 00fe 03FB03F3 		mul	r3, r3, r3
+ 1155 0102 C3EB4310 		rsb	r0, r3, r3, lsl #5
+ 1156              		.loc 1 197 8 view .LVU321
+ 1157 0106 0546     		mov	r5, r0
+ 1158 0108 0028     		cmp	r0, #0
+ 1159 010a 55DB     		blt	.L96
+ 1160              	.L84:
+ 1161 010c ED10     		asrs	r5, r5, #3
+ 1162              	.LVL97:
+ 198:Core/Src/MS5837.c **** 		SENSi = (63*(MS5837->val.TEMP-2000l)*(MS5837->val.TEMP-2000l))/32;
+ 1163              		.loc 1 198 3 is_stmt 1 view .LVU322
+ 1164              		.loc 1 198 39 is_stmt 0 view .LVU323
+ 1165 010e C3EB8313 		rsb	r3, r3, r3, lsl #6
+ 1166              		.loc 1 198 9 view .LVU324
+ 1167 0112 1846     		mov	r0, r3
+ 1168 0114 002B     		cmp	r3, #0
+ 1169 0116 51DB     		blt	.L97
+ 1170              	.L85:
+ 1171 0118 4311     		asrs	r3, r0, #5
+ 1172              	.LVL98:
+ 1173              	.L82:
+ 199:Core/Src/MS5837.c **** 	}
+ 200:Core/Src/MS5837.c **** 
+ 201:Core/Src/MS5837.c **** 	OFF2 = OFF-OFFi;
+ 1174              		.loc 1 201 2 is_stmt 1 view .LVU325
+ 1175              		.loc 1 201 7 is_stmt 0 view .LVU326
+ 1176 011a BCEB050C 		subs	ip, ip, r5
+ 1177              	.LVL99:
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 27
+
+
+ 1178              		.loc 1 201 7 view .LVU327
+ 1179 011e 67EBE575 		sbc	r5, r7, r5, asr #31
+ 1180              	.LVL100:
+ 202:Core/Src/MS5837.c **** 	SENS2 = SENS-SENSi;
+ 1181              		.loc 1 202 2 is_stmt 1 view .LVU328
+ 1182              		.loc 1 202 8 is_stmt 0 view .LVU329
+ 1183 0122 D21A     		subs	r2, r2, r3
+ 1184              	.LVL101:
+ 1185              		.loc 1 202 8 view .LVU330
+ 1186 0124 66EBE376 		sbc	r6, r6, r3, asr #31
+ 1187              	.LVL102:
+ 203:Core/Src/MS5837.c **** 
+ 204:Core/Src/MS5837.c **** 	MS5837->val.TEMP = (MS5837->val.TEMP - Ti);
+ 1188              		.loc 1 204 2 is_stmt 1 view .LVU331
+ 1189              		.loc 1 204 39 is_stmt 0 view .LVU332
+ 1190 0128 019B     		ldr	r3, [sp, #4]
+ 1191              	.LVL103:
+ 1192              		.loc 1 204 39 view .LVU333
+ 1193 012a C81A     		subs	r0, r1, r3
+ 1194              		.loc 1 204 19 view .LVU334
+ 1195 012c 2061     		str	r0, [r4, #16]
+ 205:Core/Src/MS5837.c **** 	MS5837->val.P =(((MS5837->val.D1*SENS2)/2097152l-OFF2)/32768l);
+ 1196              		.loc 1 205 2 is_stmt 1 view .LVU335
+ 1197              		.loc 1 205 34 is_stmt 0 view .LVU336
+ 1198 012e 009B     		ldr	r3, [sp]
+ 1199 0130 A3FB0223 		umull	r2, r3, r3, r2
+ 1200              	.LVL104:
+ 1201              		.loc 1 205 34 view .LVU337
+ 1202 0134 0AFB063A 		mla	r10, r10, r6, r3
+ 1203              		.loc 1 205 41 view .LVU338
+ 1204 0138 5746     		mov	r7, r10
+ 1205 013a BAF1000F 		cmp	r10, #0
+ 1206 013e 42DB     		blt	.L98
+ 1207              	.L86:
+ 1208 0140 520D     		lsrs	r2, r2, #21
+ 1209 0142 42EAC722 		orr	r2, r2, r7, lsl #11
+ 1210 0146 7F15     		asrs	r7, r7, #21
+ 1211              		.loc 1 205 50 view .LVU339
+ 1212 0148 B2EB0C02 		subs	r2, r2, ip
+ 1213 014c 67EB0505 		sbc	r5, r7, r5
+ 1214              	.LVL105:
+ 1215              		.loc 1 205 56 view .LVU340
+ 1216 0150 2B46     		mov	r3, r5
+ 1217 0152 002D     		cmp	r5, #0
+ 1218 0154 3CDB     		blt	.L99
+ 1219              	.L87:
+ 1220              		.loc 1 205 56 view .LVU341
+ 1221 0156 D50B     		lsrs	r5, r2, #15
+ 1222 0158 45EA4345 		orr	r5, r5, r3, lsl #17
+ 1223              		.loc 1 205 16 view .LVU342
+ 1224 015c 6561     		str	r5, [r4, #20]
+ 206:Core/Src/MS5837.c **** 
+ 207:Core/Src/MS5837.c **** 	MS5837->temperature = (float) MS5837->val.TEMP / 100.0f;           // result of temperature in deg
+ 1225              		.loc 1 207 2 is_stmt 1 view .LVU343
+ 1226              		.loc 1 207 24 is_stmt 0 view .LVU344
+ 1227 015e FFF7FEFF 		bl	__aeabi_i2f
+ 1228              	.LVL106:
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 28
+
+
+ 1229              		.loc 1 207 49 view .LVU345
+ 1230 0162 1F49     		ldr	r1, .L100
+ 1231 0164 FFF7FEFF 		bl	__aeabi_fdiv
+ 1232              	.LVL107:
+ 1233              		.loc 1 207 22 view .LVU346
+ 1234 0168 A060     		str	r0, [r4, #8]	@ float
+ 208:Core/Src/MS5837.c **** 	MS5837->pressure = (float) MS5837->val.P / 100.0f;                 // BAR02 result of pressure in 
+ 1235              		.loc 1 208 2 is_stmt 1 view .LVU347
+ 1236              		.loc 1 208 21 is_stmt 0 view .LVU348
+ 1237 016a 2846     		mov	r0, r5
+ 1238 016c FFF7FEFF 		bl	__aeabi_i2f
+ 1239              	.LVL108:
+ 1240              		.loc 1 208 43 view .LVU349
+ 1241 0170 1B49     		ldr	r1, .L100
+ 1242 0172 FFF7FEFF 		bl	__aeabi_fdiv
+ 1243              	.LVL109:
+ 1244              		.loc 1 208 19 view .LVU350
+ 1245 0176 E060     		str	r0, [r4, #12]	@ float
+ 209:Core/Src/MS5837.c **** 
+ 210:Core/Src/MS5837.c **** }
+ 1246              		.loc 1 210 1 view .LVU351
+ 1247 0178 03B0     		add	sp, sp, #12
+ 1248              	.LCFI19:
+ 1249              		.cfi_remember_state
+ 1250              		.cfi_def_cfa_offset 36
+ 1251              		@ sp needed
+ 1252 017a BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 1253              	.LVL110:
+ 1254              	.L90:
+ 1255              	.LCFI20:
+ 1256              		.cfi_restore_state
+ 189:Core/Src/MS5837.c **** 	SENS = (int64_t)MS5837->val.C[1] * 65536l + ((int64_t)dT * (int64_t)MS5837->val.C[3]) / 128l;
+ 1257              		.loc 1 189 88 view .LVU352
+ 1258 017e 3F33     		adds	r3, r3, #63
+ 1259 0180 42F10001 		adc	r1, r2, #0
+ 1260 0184 59E7     		b	.L77
+ 1261              	.LVL111:
+ 1262              	.L91:
+ 190:Core/Src/MS5837.c **** 
+ 1263              		.loc 1 190 88 view .LVU353
+ 1264 0186 7F33     		adds	r3, r3, #127
+ 1265 0188 41F10006 		adc	r6, r1, #0
+ 1266 018c 67E7     		b	.L78
+ 1267              	.LVL112:
+ 1268              	.L92:
+ 192:Core/Src/MS5837.c **** 	MS5837->val.P = (((int64_t)MS5837->val.D1 * SENS) / 2097152l - OFF) / 32768l;
+ 1269              		.loc 1 192 62 view .LVU354
+ 1270 018e 1548     		ldr	r0, .L100+4
+ 1271 0190 0918     		adds	r1, r1, r0
+ 1272 0192 43F10000 		adc	r0, r3, #0
+ 1273 0196 72E7     		b	.L79
+ 1274              	.L93:
+ 193:Core/Src/MS5837.c **** 
+ 1275              		.loc 1 193 52 view .LVU355
+ 1276 0198 1348     		ldr	r0, .L100+8
+ 1277 019a 1B18     		adds	r3, r3, r0
+ 1278 019c 4BF10000 		adc	r0, fp, #0
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 29
+
+
+ 1279 01a0 7FE7     		b	.L80
+ 1280              	.L94:
+ 193:Core/Src/MS5837.c **** 
+ 1281              		.loc 1 193 70 view .LVU356
+ 1282 01a2 47F6FF7B 		movw	fp, #32767
+ 1283 01a6 13EB0B03 		adds	r3, r3, fp
+ 1284 01aa 40F1000B 		adc	fp, r0, #0
+ 1285 01ae 83E7     		b	.L81
+ 1286              	.L95:
+ 196:Core/Src/MS5837.c **** 		OFFi = (31*(MS5837->val.TEMP-2000l)*(MS5837->val.TEMP-2000l))/8;
+ 1287              		.loc 1 196 36 view .LVU357
+ 1288 01b0 013B     		subs	r3, r3, #1
+ 1289 01b2 4EF10700 		adc	r0, lr, #7
+ 1290 01b6 9EE7     		b	.L83
+ 1291              	.LVL113:
+ 1292              	.L96:
+ 197:Core/Src/MS5837.c **** 		SENSi = (63*(MS5837->val.TEMP-2000l)*(MS5837->val.TEMP-2000l))/32;
+ 1293              		.loc 1 197 8 view .LVU358
+ 1294 01b8 C51D     		adds	r5, r0, #7
+ 1295 01ba A7E7     		b	.L84
+ 1296              	.LVL114:
+ 1297              	.L97:
+ 198:Core/Src/MS5837.c **** 	}
+ 1298              		.loc 1 198 9 view .LVU359
+ 1299 01bc 03F11F00 		add	r0, r3, #31
+ 1300 01c0 AAE7     		b	.L85
+ 1301              	.LVL115:
+ 1302              	.L88:
+ 183:Core/Src/MS5837.c **** 	int64_t SENS, OFF, OFF2, SENS2 = 0;
+ 1303              		.loc 1 183 23 view .LVU360
+ 1304 01c2 0023     		movs	r3, #0
+ 1305 01c4 A9E7     		b	.L82
+ 1306              	.LVL116:
+ 1307              	.L98:
+ 205:Core/Src/MS5837.c **** 
+ 1308              		.loc 1 205 41 view .LVU361
+ 1309 01c6 084B     		ldr	r3, .L100+8
+ 1310 01c8 D218     		adds	r2, r2, r3
+ 1311 01ca 4AF10007 		adc	r7, r10, #0
+ 1312 01ce B7E7     		b	.L86
+ 1313              	.LVL117:
+ 1314              	.L99:
+ 205:Core/Src/MS5837.c **** 
+ 1315              		.loc 1 205 56 view .LVU362
+ 1316 01d0 47F6FF7C 		movw	ip, #32767
+ 205:Core/Src/MS5837.c **** 
+ 1317              		.loc 1 205 56 view .LVU363
+ 1318 01d4 12EB0C02 		adds	r2, r2, ip
+ 1319 01d8 45F10003 		adc	r3, r5, #0
+ 1320 01dc BBE7     		b	.L87
+ 1321              	.L101:
+ 1322 01de 00BF     		.align	2
+ 1323              	.L100:
+ 1324 01e0 0000C842 		.word	1120403456
+ 1325 01e4 FFFF7F00 		.word	8388607
+ 1326 01e8 FFFF1F00 		.word	2097151
+ 1327              		.cfi_endproc
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 30
+
+
+ 1328              	.LFE72:
+ 1330              		.global	__aeabi_fmul
+ 1331              		.global	__aeabi_fsub
+ 1332              		.global	__aeabi_f2d
+ 1333              		.global	__aeabi_dmul
+ 1334              		.global	__aeabi_ddiv
+ 1335              		.global	__aeabi_d2f
+ 1336              		.section	.text.MS5837_Depth,"ax",%progbits
+ 1337              		.align	1
+ 1338              		.global	MS5837_Depth
+ 1339              		.syntax unified
+ 1340              		.thumb
+ 1341              		.thumb_func
+ 1343              	MS5837_Depth:
+ 1344              	.LVL118:
+ 1345              	.LFB73:
+ 211:Core/Src/MS5837.c **** 
+ 212:Core/Src/MS5837.c **** float MS5837_Depth(MS5837_t *MS5837) {
+ 1346              		.loc 1 212 38 is_stmt 1 view -0
+ 1347              		.cfi_startproc
+ 1348              		@ args = 0, pretend = 0, frame = 0
+ 1349              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1350              		.loc 1 212 38 is_stmt 0 view .LVU365
+ 1351 0000 D0B5     		push	{r4, r6, r7, lr}
+ 1352              	.LCFI21:
+ 1353              		.cfi_def_cfa_offset 16
+ 1354              		.cfi_offset 4, -16
+ 1355              		.cfi_offset 6, -12
+ 1356              		.cfi_offset 7, -8
+ 1357              		.cfi_offset 14, -4
+ 1358 0002 0446     		mov	r4, r0
+ 213:Core/Src/MS5837.c **** 	//return (P_MS5837/100)*1.019716;
+ 214:Core/Src/MS5837.c **** 	return ((MS5837->pressure*100)-101300)/(MS5837->fluidDensity*9.80665);
+ 1359              		.loc 1 214 2 is_stmt 1 view .LVU366
+ 1360              		.loc 1 214 27 is_stmt 0 view .LVU367
+ 1361 0004 1049     		ldr	r1, .L104+8
+ 1362 0006 C068     		ldr	r0, [r0, #12]	@ float
+ 1363              	.LVL119:
+ 1364              		.loc 1 214 27 view .LVU368
+ 1365 0008 FFF7FEFF 		bl	__aeabi_fmul
+ 1366              	.LVL120:
+ 1367              		.loc 1 214 32 view .LVU369
+ 1368 000c 0F49     		ldr	r1, .L104+12
+ 1369 000e FFF7FEFF 		bl	__aeabi_fsub
+ 1370              	.LVL121:
+ 1371 0012 FFF7FEFF 		bl	__aeabi_f2d
+ 1372              	.LVL122:
+ 1373 0016 0646     		mov	r6, r0
+ 1374 0018 0F46     		mov	r7, r1
+ 1375              		.loc 1 214 48 view .LVU370
+ 1376 001a 6068     		ldr	r0, [r4, #4]	@ float
+ 1377 001c FFF7FEFF 		bl	__aeabi_f2d
+ 1378              	.LVL123:
+ 1379              		.loc 1 214 62 view .LVU371
+ 1380 0020 07A3     		adr	r3, .L104
+ 1381 0022 D3E90023 		ldrd	r2, [r3]
+ 1382 0026 FFF7FEFF 		bl	__aeabi_dmul
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 31
+
+
+ 1383              	.LVL124:
+ 1384 002a 0246     		mov	r2, r0
+ 1385 002c 0B46     		mov	r3, r1
+ 1386              		.loc 1 214 40 view .LVU372
+ 1387 002e 3046     		mov	r0, r6
+ 1388 0030 3946     		mov	r1, r7
+ 1389 0032 FFF7FEFF 		bl	__aeabi_ddiv
+ 1390              	.LVL125:
+ 1391 0036 FFF7FEFF 		bl	__aeabi_d2f
+ 1392              	.LVL126:
+ 215:Core/Src/MS5837.c **** 
+ 216:Core/Src/MS5837.c **** }
+ 1393              		.loc 1 216 1 view .LVU373
+ 1394 003a D0BD     		pop	{r4, r6, r7, pc}
+ 1395              	.LVL127:
+ 1396              	.L105:
+ 1397              		.loc 1 216 1 view .LVU374
+ 1398 003c AFF30080 		.align	3
+ 1399              	.L104:
+ 1400 0040 05A3923A 		.word	982688517
+ 1401 0044 019D2340 		.word	1076075777
+ 1402 0048 0000C842 		.word	1120403456
+ 1403 004c 00DAC547 		.word	1204148736
+ 1404              		.cfi_endproc
+ 1405              	.LFE73:
+ 1407              		.global	__aeabi_dsub
+ 1408              		.section	.text.MS5837_Altitude,"ax",%progbits
+ 1409              		.align	1
+ 1410              		.global	MS5837_Altitude
+ 1411              		.syntax unified
+ 1412              		.thumb
+ 1413              		.thumb_func
+ 1415              	MS5837_Altitude:
+ 1416              	.LVL128:
+ 1417              	.LFB74:
+ 217:Core/Src/MS5837.c **** 
+ 218:Core/Src/MS5837.c **** float MS5837_Altitude(MS5837_t *MS5837) {
+ 1418              		.loc 1 218 41 is_stmt 1 view -0
+ 1419              		.cfi_startproc
+ 1420              		@ args = 0, pretend = 0, frame = 0
+ 1421              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1422              		.loc 1 218 41 is_stmt 0 view .LVU376
+ 1423 0000 08B5     		push	{r3, lr}
+ 1424              	.LCFI22:
+ 1425              		.cfi_def_cfa_offset 8
+ 1426              		.cfi_offset 3, -8
+ 1427              		.cfi_offset 14, -4
+ 219:Core/Src/MS5837.c **** 	//return (P_MS5837/100)*1.019716;
+ 220:Core/Src/MS5837.c **** 	return (1-pow((MS5837->pressure/1013.25),0.190284))*145366.45*0.3048;
+ 1428              		.loc 1 220 2 is_stmt 1 view .LVU377
+ 1429              		.loc 1 220 23 is_stmt 0 view .LVU378
+ 1430 0002 C068     		ldr	r0, [r0, #12]	@ float
+ 1431              	.LVL129:
+ 1432              		.loc 1 220 23 view .LVU379
+ 1433 0004 FFF7FEFF 		bl	__aeabi_f2d
+ 1434              	.LVL130:
+ 1435              		.loc 1 220 12 view .LVU380
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 32
+
+
+ 1436 0008 0FA3     		adr	r3, .L108
+ 1437 000a D3E90023 		ldrd	r2, [r3]
+ 1438 000e FFF7FEFF 		bl	__aeabi_ddiv
+ 1439              	.LVL131:
+ 1440 0012 0FA3     		adr	r3, .L108+8
+ 1441 0014 D3E90023 		ldrd	r2, [r3]
+ 1442 0018 FFF7FEFF 		bl	pow
+ 1443              	.LVL132:
+ 1444 001c 0246     		mov	r2, r0
+ 1445 001e 0B46     		mov	r3, r1
+ 1446              		.loc 1 220 11 view .LVU381
+ 1447 0020 0020     		movs	r0, #0
+ 1448 0022 1149     		ldr	r1, .L108+32
+ 1449 0024 FFF7FEFF 		bl	__aeabi_dsub
+ 1450              	.LVL133:
+ 1451              		.loc 1 220 53 view .LVU382
+ 1452 0028 0BA3     		adr	r3, .L108+16
+ 1453 002a D3E90023 		ldrd	r2, [r3]
+ 1454 002e FFF7FEFF 		bl	__aeabi_dmul
+ 1455              	.LVL134:
+ 1456              		.loc 1 220 63 view .LVU383
+ 1457 0032 0BA3     		adr	r3, .L108+24
+ 1458 0034 D3E90023 		ldrd	r2, [r3]
+ 1459 0038 FFF7FEFF 		bl	__aeabi_dmul
+ 1460              	.LVL135:
+ 1461 003c FFF7FEFF 		bl	__aeabi_d2f
+ 1462              	.LVL136:
+ 221:Core/Src/MS5837.c **** 
+ 222:Core/Src/MS5837.c **** }
+ 1463              		.loc 1 222 1 view .LVU384
+ 1464 0040 08BD     		pop	{r3, pc}
+ 1465              	.L109:
+ 1466 0042 00BFAFF3 		.align	3
+ 1466      0080
+ 1467              	.L108:
+ 1468 0048 00000000 		.word	0
+ 1469 004c 00AA8F40 		.word	1083156992
+ 1470 0050 3CDD79E2 		.word	-495329988
+ 1471 0054 395BC83F 		.word	1070095161
+ 1472 0058 9A999999 		.word	-1717986918
+ 1473 005c B3BE0141 		.word	1090633395
+ 1474 0060 FD87F4DB 		.word	-604731395
+ 1475 0064 D781D33F 		.word	1070825943
+ 1476 0068 0000F03F 		.word	1072693248
+ 1477              		.cfi_endproc
+ 1478              	.LFE74:
+ 1480              		.global	MS5837_i2c_Port
+ 1481              		.section	.bss.MS5837_i2c_Port,"aw",%nobits
+ 1482              		.align	2
+ 1483              		.set	.LANCHOR0,. + 0
+ 1486              	MS5837_i2c_Port:
+ 1487 0000 00000000 		.space	4
+ 1488              		.text
+ 1489              	.Letext0:
+ 1490              		.file 2 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
+ 1491              		.file 3 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
+ 1492              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 33
+
+
+ 1493              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 1494              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 1495              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h"
+ 1496              		.file 8 "Core/Inc/MS5837.h"
+ 1497              		.file 9 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
+ 1498              		.file 10 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xp
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s 			page 34
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 MS5837.c
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:18     .text.crc4:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:23     .text.crc4:0000000000000000 crc4
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:150    .text.I2C_Write:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:155    .text.I2C_Write:0000000000000000 I2C_Write
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:203    .text.I2C_Write:0000000000000028 $d
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:208    .text.I2C_Read:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:213    .text.I2C_Read:0000000000000000 I2C_Read
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:293    .text.I2C_Read:0000000000000050 $d
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:298    .text.MS5837_ADC:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:303    .text.MS5837_ADC:0000000000000000 MS5837_ADC
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:421    .text.MS5837_Reset:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:427    .text.MS5837_Reset:0000000000000000 MS5837_Reset
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:463    .text.MS5837_Init:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:469    .text.MS5837_Init:0000000000000000 MS5837_Init
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:603    .text.MS5837_Init:000000000000006c $d
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:610    .text.MS5837_30BA_Calc:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:616    .text.MS5837_30BA_Calc:0000000000000000 MS5837_30BA_Calc
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:978    .text.MS5837_30BA_Calc:0000000000000210 $d
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:986    .text.MS5837_02BA_Calc:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:992    .text.MS5837_02BA_Calc:0000000000000000 MS5837_02BA_Calc
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:1324   .text.MS5837_02BA_Calc:00000000000001e0 $d
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:1337   .text.MS5837_Depth:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:1343   .text.MS5837_Depth:0000000000000000 MS5837_Depth
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:1400   .text.MS5837_Depth:0000000000000040 $d
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:1409   .text.MS5837_Altitude:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:1415   .text.MS5837_Altitude:0000000000000000 MS5837_Altitude
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:1468   .text.MS5837_Altitude:0000000000000048 $d
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:1486   .bss.MS5837_i2c_Port:0000000000000000 MS5837_i2c_Port
+C:\Users\kirby\AppData\Local\Temp\ccyrvmLS.s:1482   .bss.MS5837_i2c_Port:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+HAL_I2C_Master_Transmit
+HAL_Delay
+HAL_I2C_Master_Receive
+__aeabi_i2f
+__aeabi_fdiv
+__aeabi_fmul
+__aeabi_fsub
+__aeabi_f2d
+__aeabi_dmul
+__aeabi_ddiv
+__aeabi_d2f
+__aeabi_dsub
+pow
