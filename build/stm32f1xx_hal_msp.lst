@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
   30:Core/Src/stm32f1xx_hal_msp.c **** 
   31:Core/Src/stm32f1xx_hal_msp.c **** /* USER CODE END TD */
   32:Core/Src/stm32f1xx_hal_msp.c **** 
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 2
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 2
 
 
   33:Core/Src/stm32f1xx_hal_msp.c **** /* Private define ------------------------------------------------------------*/
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
   43              		.loc 1 70 3 view .LVU4
   44 000c 9A69     		ldr	r2, [r3, #24]
   45 000e 02F00102 		and	r2, r2, #1
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 3
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 3
 
 
   46 0012 0092     		str	r2, [sp]
@@ -145,9 +145,9 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
   72:Core/Src/stm32f1xx_hal_msp.c **** 
   73:Core/Src/stm32f1xx_hal_msp.c ****   /* System interrupt init*/
   74:Core/Src/stm32f1xx_hal_msp.c **** 
-  75:Core/Src/stm32f1xx_hal_msp.c ****   /** DISABLE: JTAG-DP Disabled and SW-DP Disabled
+  75:Core/Src/stm32f1xx_hal_msp.c ****   /** NOJTAG: JTAG-DP Disabled and SW-DP Enabled
   76:Core/Src/stm32f1xx_hal_msp.c ****   */
-  77:Core/Src/stm32f1xx_hal_msp.c ****   __HAL_AFIO_REMAP_SWJ_DISABLE();
+  77:Core/Src/stm32f1xx_hal_msp.c ****   __HAL_AFIO_REMAP_SWJ_NOJTAG();
   66              		.loc 1 77 3 view .LVU13
   67              	.LBB4:
   68              		.loc 1 77 3 view .LVU14
@@ -158,7 +158,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
   73 002c 23F0E063 		bic	r3, r3, #117440512
   74              	.LVL1:
   75              		.loc 1 77 3 view .LVU16
-  76 0030 43F08063 		orr	r3, r3, #67108864
+  76 0030 43F00073 		orr	r3, r3, #33554432
   77              	.LVL2:
   78              		.loc 1 77 3 view .LVU17
   79 0034 5360     		str	r3, [r2, #4]
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
   88              	.L4:
   89 003a 00BF     		.align	2
   90              	.L3:
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 4
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 4
 
 
   91 003c 00100240 		.word	1073876992
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
   95:Core/Src/stm32f1xx_hal_msp.c ****   /* USER CODE BEGIN I2C1_MspInit 0 */
   96:Core/Src/stm32f1xx_hal_msp.c **** 
   97:Core/Src/stm32f1xx_hal_msp.c ****   /* USER CODE END I2C1_MspInit 0 */
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 5
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 5
 
 
   98:Core/Src/stm32f1xx_hal_msp.c **** 
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
  104:Core/Src/stm32f1xx_hal_msp.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
  163              		.loc 1 104 25 is_stmt 0 view .LVU35
  164 002e C023     		movs	r3, #192
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 6
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 6
 
 
  165 0030 0293     		str	r3, [sp, #8]
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
  208              		.align	1
  209              		.global	HAL_I2C_MspDeInit
  210              		.syntax unified
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 7
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 7
 
 
  211              		.thumb
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
  243 0018 4021     		movs	r1, #64
  244 001a 2046     		mov	r0, r4
  245              	.LVL9:
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 8
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 8
 
 
  246              		.loc 1 138 5 is_stmt 0 view .LVU56
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
  284              		.cfi_offset 14, -4
  285 0002 86B0     		sub	sp, sp, #24
  286              	.LCFI8:
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 9
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 9
 
 
  287              		.cfi_def_cfa_offset 32
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
  311              	.LVL14:
  312              	.L23:
  313              	.LCFI10:
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 10
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 10
 
 
  314              		.cfi_restore_state
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
  352 0046 0223     		movs	r3, #2
  353 0048 0393     		str	r3, [sp, #12]
  173:Core/Src/stm32f1xx_hal_msp.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 11
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 11
 
 
  354              		.loc 1 173 5 is_stmt 1 view .LVU83
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
  400              	.LVL18:
  401              	.LFB69:
  187:Core/Src/stm32f1xx_hal_msp.c **** 
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 12
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 12
 
 
  188:Core/Src/stm32f1xx_hal_msp.c **** /**
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
  427 000e D369     		ldr	r3, [r2, #28]
  428 0010 23F40033 		bic	r3, r3, #131072
  429 0014 D361     		str	r3, [r2, #28]
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 13
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 13
 
 
  208:Core/Src/stm32f1xx_hal_msp.c **** 
@@ -750,26 +750,26 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 1
  455              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
  456              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h"
  457              		.file 9 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccckus8W.s 			page 14
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s 			page 14
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stm32f1xx_hal_msp.c
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:18     .text.HAL_MspInit:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:24     .text.HAL_MspInit:0000000000000000 HAL_MspInit
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:91     .text.HAL_MspInit:000000000000003c $d
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:97     .text.HAL_I2C_MspInit:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:103    .text.HAL_I2C_MspInit:0000000000000000 HAL_I2C_MspInit
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:201    .text.HAL_I2C_MspInit:0000000000000058 $d
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:208    .text.HAL_I2C_MspDeInit:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:214    .text.HAL_I2C_MspDeInit:0000000000000000 HAL_I2C_MspDeInit
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:259    .text.HAL_I2C_MspDeInit:000000000000002c $d
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:266    .text.HAL_UART_MspInit:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:272    .text.HAL_UART_MspInit:0000000000000000 HAL_UART_MspInit
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:387    .text.HAL_UART_MspInit:000000000000006c $d
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:393    .text.HAL_UART_MspDeInit:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:399    .text.HAL_UART_MspDeInit:0000000000000000 HAL_UART_MspDeInit
-C:\Users\kirby\AppData\Local\Temp\ccckus8W.s:442    .text.HAL_UART_MspDeInit:0000000000000020 $d
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:18     .text.HAL_MspInit:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:24     .text.HAL_MspInit:0000000000000000 HAL_MspInit
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:91     .text.HAL_MspInit:000000000000003c $d
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:97     .text.HAL_I2C_MspInit:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:103    .text.HAL_I2C_MspInit:0000000000000000 HAL_I2C_MspInit
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:201    .text.HAL_I2C_MspInit:0000000000000058 $d
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:208    .text.HAL_I2C_MspDeInit:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:214    .text.HAL_I2C_MspDeInit:0000000000000000 HAL_I2C_MspDeInit
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:259    .text.HAL_I2C_MspDeInit:000000000000002c $d
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:266    .text.HAL_UART_MspInit:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:272    .text.HAL_UART_MspInit:0000000000000000 HAL_UART_MspInit
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:387    .text.HAL_UART_MspInit:000000000000006c $d
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:393    .text.HAL_UART_MspDeInit:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:399    .text.HAL_UART_MspDeInit:0000000000000000 HAL_UART_MspDeInit
+C:\Users\kirby\AppData\Local\Temp\ccTeRtKS.s:442    .text.HAL_UART_MspDeInit:0000000000000020 $d
 
 UNDEFINED SYMBOLS
 HAL_GPIO_Init
