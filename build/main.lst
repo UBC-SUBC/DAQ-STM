@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
   31:Core/Src/main.c **** /* USER CODE END PTD */
   32:Core/Src/main.c **** 
   33:Core/Src/main.c **** /* Private define ------------------------------------------------------------*/
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 2
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 2
 
 
   34:Core/Src/main.c **** /* USER CODE BEGIN PD */
@@ -75,7 +75,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
   45:Core/Src/main.c **** UART_HandleTypeDef huart2;
   46:Core/Src/main.c **** 
   47:Core/Src/main.c **** /* USER CODE BEGIN PV */
-  48:Core/Src/main.c **** MS5837_t * MS5837;
+  48:Core/Src/main.c **** 
   49:Core/Src/main.c **** /* USER CODE END PV */
   50:Core/Src/main.c **** 
   51:Core/Src/main.c **** /* Private function prototypes -----------------------------------------------*/
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
   88:Core/Src/main.c **** 
   89:Core/Src/main.c ****   /* USER CODE END SysInit */
   90:Core/Src/main.c **** 
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 3
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 3
 
 
   91:Core/Src/main.c ****   /* Initialize all configured peripherals */
@@ -126,7 +126,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
   93:Core/Src/main.c ****   MX_I2C1_Init();
   94:Core/Src/main.c ****   MX_USART2_UART_Init();
   95:Core/Src/main.c ****   /* USER CODE BEGIN 2 */
-  96:Core/Src/main.c ****   MS5837_Init(MS5837);
+  96:Core/Src/main.c ****   MS5837_init(&hi2c1);
   97:Core/Src/main.c ****   /* USER CODE END 2 */
   98:Core/Src/main.c **** 
   99:Core/Src/main.c ****   /* Infinite loop */
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
  145:Core/Src/main.c ****   }
  146:Core/Src/main.c **** }
  147:Core/Src/main.c **** 
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 4
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 4
 
 
  148:Core/Src/main.c **** /**
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
  202:Core/Src/main.c ****   huart2.Init.Mode = UART_MODE_TX_RX;
  203:Core/Src/main.c ****   huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
  204:Core/Src/main.c ****   huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 5
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 5
 
 
  205:Core/Src/main.c ****   if (HAL_UART_Init(&huart2) != HAL_OK)
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
   59 0020 03F00803 		and	r3, r3, #8
   60 0024 0193     		str	r3, [sp, #4]
   61              		.loc 1 225 3 view .LVU11
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 6
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 6
 
 
   62 0026 019B     		ldr	r3, [sp, #4]
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
    6:Drivers/CMSIS/Include/cmsis_gcc.h ****  ******************************************************************************/
    7:Drivers/CMSIS/Include/cmsis_gcc.h **** /*
    8:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Copyright (c) 2009-2018 Arm Limited. All rights reserved.
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 7
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 7
 
 
    9:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
   63:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   64:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED_STRUCT
   65:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED_STRUCT                        struct __attribute__((packed, aligned(1)))
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 8
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 8
 
 
   66:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
  120:Drivers/CMSIS/Include/cmsis_gcc.h ****     \defgroup CMSIS_Core_RegAccFunctions CMSIS Core Register Access Functions
  121:Drivers/CMSIS/Include/cmsis_gcc.h ****   @{
  122:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 9
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 9
 
 
  123:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
  128 0000 08B5     		push	{r3, lr}
  129              	.LCFI2:
  130              		.cfi_def_cfa_offset 8
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 10
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 10
 
 
  131              		.cfi_offset 3, -8
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
  172:Core/Src/main.c ****   {
  166              		.loc 1 172 7 is_stmt 0 view .LVU41
  167 0020 FFF7FEFF 		bl	HAL_I2C_Init
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 11
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 11
 
 
  168              	.LVL0:
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
  214 000e 0023     		movs	r3, #0
  215 0010 8360     		str	r3, [r0, #8]
  200:Core/Src/main.c ****   huart2.Init.Parity = UART_PARITY_NONE;
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 12
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 12
 
 
  216              		.loc 1 200 3 is_stmt 1 view .LVU52
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
  257              		.thumb_func
  259              	SystemClock_Config:
  260              	.LFB66:
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 13
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 13
 
 
  115:Core/Src/main.c ****   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
  126:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL16;
  302              		.loc 1 126 3 is_stmt 1 view .LVU80
  127:Core/Src/main.c ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 14
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 14
 
 
  303              		.loc 1 127 3 view .LVU81
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
  146:Core/Src/main.c **** 
  340              		.loc 1 146 1 view .LVU99
  341 0050 11B0     		add	sp, sp, #68
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 15
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 15
 
 
  342              	.LCFI6:
@@ -898,100 +898,88 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 1
   94:Core/Src/main.c ****   /* USER CODE BEGIN 2 */
  391              		.loc 1 94 3 view .LVU107
  392 0012 FFF7FEFF 		bl	MX_USART2_UART_Init
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 16
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 16
 
 
  393              	.LVL13:
   96:Core/Src/main.c ****   /* USER CODE END 2 */
  394              		.loc 1 96 3 view .LVU108
- 395 0016 024B     		ldr	r3, .L28
- 396 0018 1868     		ldr	r0, [r3]
- 397 001a FFF7FEFF 		bl	MS5837_Init
- 398              	.LVL14:
- 399              	.L26:
+ 395 0016 0248     		ldr	r0, .L28
+ 396 0018 FFF7FEFF 		bl	MS5837_init
+ 397              	.LVL14:
+ 398              	.L26:
  101:Core/Src/main.c ****   {
- 400              		.loc 1 101 3 discriminator 1 view .LVU109
+ 399              		.loc 1 101 3 discriminator 1 view .LVU109
  106:Core/Src/main.c ****   /* USER CODE END 3 */
- 401              		.loc 1 106 3 discriminator 1 view .LVU110
+ 400              		.loc 1 106 3 discriminator 1 view .LVU110
  101:Core/Src/main.c ****   {
- 402              		.loc 1 101 9 discriminator 1 view .LVU111
- 403 001e FEE7     		b	.L26
- 404              	.L29:
- 405              		.align	2
- 406              	.L28:
- 407 0020 00000000 		.word	.LANCHOR2
- 408              		.cfi_endproc
- 409              	.LFE65:
- 411              		.global	MS5837
- 412              		.global	huart2
- 413              		.global	hi2c1
- 414              		.section	.bss.MS5837,"aw",%nobits
- 415              		.align	2
- 416              		.set	.LANCHOR2,. + 0
- 419              	MS5837:
- 420 0000 00000000 		.space	4
- 421              		.section	.bss.hi2c1,"aw",%nobits
- 422              		.align	2
- 423              		.set	.LANCHOR0,. + 0
- 426              	hi2c1:
- 427 0000 00000000 		.space	84
- 427      00000000 
- 427      00000000 
- 427      00000000 
- 427      00000000 
- 428              		.section	.bss.huart2,"aw",%nobits
- 429              		.align	2
- 430              		.set	.LANCHOR1,. + 0
- 433              	huart2:
- 434 0000 00000000 		.space	68
- 434      00000000 
- 434      00000000 
- 434      00000000 
- 434      00000000 
- 435              		.text
- 436              	.Letext0:
- 437              		.file 3 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
- 438              		.file 4 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
- 439              		.file 5 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
- 440              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
- 441              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h"
- 442              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h"
- 443              		.file 9 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
- 444              		.file 10 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h"
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 17
-
-
- 445              		.file 11 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
- 446              		.file 12 "Core/Inc/MS5837.h"
- 447              		.file 13 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
- 448              		.file 14 "<built-in>"
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s 			page 18
+ 401              		.loc 1 101 9 discriminator 1 view .LVU111
+ 402 001c FEE7     		b	.L26
+ 403              	.L29:
+ 404 001e 00BF     		.align	2
+ 405              	.L28:
+ 406 0020 00000000 		.word	.LANCHOR0
+ 407              		.cfi_endproc
+ 408              	.LFE65:
+ 410              		.global	huart2
+ 411              		.global	hi2c1
+ 412              		.section	.bss.hi2c1,"aw",%nobits
+ 413              		.align	2
+ 414              		.set	.LANCHOR0,. + 0
+ 417              	hi2c1:
+ 418 0000 00000000 		.space	84
+ 418      00000000 
+ 418      00000000 
+ 418      00000000 
+ 418      00000000 
+ 419              		.section	.bss.huart2,"aw",%nobits
+ 420              		.align	2
+ 421              		.set	.LANCHOR1,. + 0
+ 424              	huart2:
+ 425 0000 00000000 		.space	68
+ 425      00000000 
+ 425      00000000 
+ 425      00000000 
+ 425      00000000 
+ 426              		.text
+ 427              	.Letext0:
+ 428              		.file 3 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
+ 429              		.file 4 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
+ 430              		.file 5 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 431              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 432              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h"
+ 433              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h"
+ 434              		.file 9 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 435              		.file 10 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h"
+ 436              		.file 11 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
+ 437              		.file 12 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
+ 438              		.file 13 "Drivers/STM32_MS5837/MS5837.h"
+ 439              		.file 14 "<built-in>"
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccpevL96.s 			page 17
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:18     .text.MX_GPIO_Init:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:23     .text.MX_GPIO_Init:0000000000000000 MX_GPIO_Init
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:74     .text.MX_GPIO_Init:000000000000002c $d
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:79     .text.Error_Handler:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:85     .text.Error_Handler:0000000000000000 Error_Handler
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:117    .text.MX_I2C1_Init:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:122    .text.MX_I2C1_Init:0000000000000000 MX_I2C1_Init
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:180    .text.MX_I2C1_Init:000000000000002c $d
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:187    .text.MX_USART2_UART_Init:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:192    .text.MX_USART2_UART_Init:0000000000000000 MX_USART2_UART_Init
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:247    .text.MX_USART2_UART_Init:000000000000002c $d
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:253    .text.SystemClock_Config:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:259    .text.SystemClock_Config:0000000000000000 SystemClock_Config
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:361    .text.main:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:367    .text.main:0000000000000000 main
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:407    .text.main:0000000000000020 $d
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:419    .bss.MS5837:0000000000000000 MS5837
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:433    .bss.huart2:0000000000000000 huart2
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:426    .bss.hi2c1:0000000000000000 hi2c1
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:415    .bss.MS5837:0000000000000000 $d
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:422    .bss.hi2c1:0000000000000000 $d
-C:\Users\kirby\AppData\Local\Temp\ccvowmhR.s:429    .bss.huart2:0000000000000000 $d
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:18     .text.MX_GPIO_Init:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:23     .text.MX_GPIO_Init:0000000000000000 MX_GPIO_Init
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:74     .text.MX_GPIO_Init:000000000000002c $d
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:79     .text.Error_Handler:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:85     .text.Error_Handler:0000000000000000 Error_Handler
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:117    .text.MX_I2C1_Init:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:122    .text.MX_I2C1_Init:0000000000000000 MX_I2C1_Init
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:180    .text.MX_I2C1_Init:000000000000002c $d
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:187    .text.MX_USART2_UART_Init:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:192    .text.MX_USART2_UART_Init:0000000000000000 MX_USART2_UART_Init
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:247    .text.MX_USART2_UART_Init:000000000000002c $d
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:253    .text.SystemClock_Config:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:259    .text.SystemClock_Config:0000000000000000 SystemClock_Config
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:361    .text.main:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:367    .text.main:0000000000000000 main
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:406    .text.main:0000000000000020 $d
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:424    .bss.huart2:0000000000000000 huart2
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:417    .bss.hi2c1:0000000000000000 hi2c1
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:413    .bss.hi2c1:0000000000000000 $d
+C:\Users\kirby\AppData\Local\Temp\ccpevL96.s:420    .bss.huart2:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 HAL_I2C_Init
@@ -1000,4 +988,4 @@ memset
 HAL_RCC_OscConfig
 HAL_RCC_ClockConfig
 HAL_Init
-MS5837_Init
+MS5837_init

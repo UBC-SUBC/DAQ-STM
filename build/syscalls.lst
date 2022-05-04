@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
   30:Core/Src/syscalls.c **** #include <time.h>
   31:Core/Src/syscalls.c **** #include <sys/time.h>
   32:Core/Src/syscalls.c **** #include <sys/times.h>
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 2
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 2
 
 
   33:Core/Src/syscalls.c **** 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
   65              	_kill:
   66              	.LVL0:
   67              	.LFB27:
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 3
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 3
 
 
   53:Core/Src/syscalls.c **** 
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
  114 0006 FFF7FEFF 		bl	_kill
  115              	.LVL3:
  116              	.L6:
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 4
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 4
 
 
   63:Core/Src/syscalls.c **** 	while (1) {}		/* Make sure we hang here */
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
  163              	.LVL8:
  164              		.loc 1 72 10 discriminator 3 view .LVU26
  165 0010 01F8010B 		strb	r0, [r1], #1
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 5
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 5
 
 
  166              	.LVL9:
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
   80:Core/Src/syscalls.c **** 	int DataIdx;
  211              		.loc 1 80 2 is_stmt 1 view .LVU37
   81:Core/Src/syscalls.c **** 
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 6
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 6
 
 
   82:Core/Src/syscalls.c **** 	for (DataIdx = 0; DataIdx < len; DataIdx++)
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
  255              		.cfi_startproc
  256              		@ args = 0, pretend = 0, frame = 0
  257              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 7
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 7
 
 
  258              		@ link register save eliminated.
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
  101:Core/Src/syscalls.c **** int _isatty(int file)
  102:Core/Src/syscalls.c **** {
  306              		.loc 1 102 1 is_stmt 1 view -0
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 8
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 8
 
 
  307              		.cfi_startproc
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
  355              		.cfi_startproc
  356              		@ args = 4, pretend = 12, frame = 0
  357              		@ frame_needed = 0, uses_anonymous_args = 1
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 9
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 9
 
 
  358              		@ link register save eliminated.
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
  120:Core/Src/syscalls.c **** 	return -1;
  407              		.loc 1 120 2 is_stmt 1 view .LVU78
  121:Core/Src/syscalls.c **** }
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 10
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 10
 
 
  408              		.loc 1 121 1 is_stmt 0 view .LVU79
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
  457              		.loc 1 130 1 is_stmt 1 view -0
  458              		.cfi_startproc
  459              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 11
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 11
 
 
  460              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
  140:Core/Src/syscalls.c **** int _link(char *old, char *new)
  141:Core/Src/syscalls.c **** {
  509              		.loc 1 141 1 is_stmt 1 view -0
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 12
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 12
 
 
  510              		.cfi_startproc
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
  557              		.loc 1 150 1 is_stmt 0 view .LVU106
  558 000a 4FF0FF30 		mov	r0, #-1
  559 000e 08BD     		pop	{r3, pc}
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 13
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 13
 
 
  560              		.cfi_endproc
@@ -778,58 +778,58 @@ ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 1
  615              		.file 3 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
  616              		.file 4 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
  617              		.file 5 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 14
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 14
 
 
  618              		.file 6 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
  619              		.file 7 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
  620              		.file 8 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
  621              		.file 9 "c:\\users\\kirby\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
-ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s 			page 15
+ARM GAS  C:\Users\kirby\AppData\Local\Temp\ccleDImb.s 			page 15
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 syscalls.c
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:18     .text.initialise_monitor_handles:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:24     .text.initialise_monitor_handles:0000000000000000 initialise_monitor_handles
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:38     .text._getpid:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:44     .text._getpid:0000000000000000 _getpid
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:59     .text._kill:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:65     .text._kill:0000000000000000 _kill
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:92     .text._exit:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:98     .text._exit:0000000000000000 _exit
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:125    .text._read:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:131    .text._read:0000000000000000 _read
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:188    .text._write:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:194    .text._write:0000000000000000 _write
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:245    .text._close:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:251    .text._close:0000000000000000 _close
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:269    .text._fstat:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:275    .text._fstat:0000000000000000 _fstat
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:297    .text._isatty:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:303    .text._isatty:0000000000000000 _isatty
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:321    .text._lseek:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:327    .text._lseek:0000000000000000 _lseek
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:345    .text._open:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:351    .text._open:0000000000000000 _open
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:382    .text._wait:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:388    .text._wait:0000000000000000 _wait
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:415    .text._unlink:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:421    .text._unlink:0000000000000000 _unlink
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:448    .text._times:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:454    .text._times:0000000000000000 _times
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:472    .text._stat:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:478    .text._stat:0000000000000000 _stat
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:500    .text._link:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:506    .text._link:0000000000000000 _link
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:533    .text._fork:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:539    .text._fork:0000000000000000 _fork
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:564    .text._execve:0000000000000000 $t
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:570    .text._execve:0000000000000000 _execve
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:608    .data.environ:0000000000000000 environ
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:602    .bss.__env:0000000000000000 __env
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:599    .bss.__env:0000000000000000 $d
-C:\Users\kirby\AppData\Local\Temp\ccXwqOfY.s:605    .data.environ:0000000000000000 $d
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:18     .text.initialise_monitor_handles:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:24     .text.initialise_monitor_handles:0000000000000000 initialise_monitor_handles
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:38     .text._getpid:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:44     .text._getpid:0000000000000000 _getpid
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:59     .text._kill:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:65     .text._kill:0000000000000000 _kill
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:92     .text._exit:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:98     .text._exit:0000000000000000 _exit
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:125    .text._read:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:131    .text._read:0000000000000000 _read
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:188    .text._write:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:194    .text._write:0000000000000000 _write
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:245    .text._close:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:251    .text._close:0000000000000000 _close
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:269    .text._fstat:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:275    .text._fstat:0000000000000000 _fstat
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:297    .text._isatty:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:303    .text._isatty:0000000000000000 _isatty
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:321    .text._lseek:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:327    .text._lseek:0000000000000000 _lseek
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:345    .text._open:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:351    .text._open:0000000000000000 _open
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:382    .text._wait:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:388    .text._wait:0000000000000000 _wait
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:415    .text._unlink:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:421    .text._unlink:0000000000000000 _unlink
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:448    .text._times:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:454    .text._times:0000000000000000 _times
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:472    .text._stat:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:478    .text._stat:0000000000000000 _stat
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:500    .text._link:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:506    .text._link:0000000000000000 _link
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:533    .text._fork:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:539    .text._fork:0000000000000000 _fork
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:564    .text._execve:0000000000000000 $t
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:570    .text._execve:0000000000000000 _execve
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:608    .data.environ:0000000000000000 environ
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:602    .bss.__env:0000000000000000 __env
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:599    .bss.__env:0000000000000000 $d
+C:\Users\kirby\AppData\Local\Temp\ccleDImb.s:605    .data.environ:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 __errno

@@ -36,7 +36,6 @@ BUILD_DIR = build
 ######################################
 # C sources
 C_SOURCES =  \
-Core/Src/MS5837.c \
 Core/Src/main.c \
 Core/Src/stm32f1xx_hal_msp.c \
 Core/Src/stm32f1xx_it.c \
@@ -57,7 +56,8 @@ Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c \
-Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c \
+Drivers/STM32_MS5837/MS5837.c
 
 
 CPP_SOURCES = \
@@ -133,7 +133,8 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/Device/ST/STM32F1xx/Include \
 -IDrivers/CMSIS/Include \
 -IDrivers/STM32F1xx_HAL_Driver/Inc \
--IDrivers/STM32F1xx_HAL_Driver/Inc/Legacy
+-IDrivers/STM32F1xx_HAL_Driver/Inc/Legacy \
+-IDrivers/STM32_MS5837
 
 
 

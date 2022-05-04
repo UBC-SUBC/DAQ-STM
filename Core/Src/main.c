@@ -45,7 +45,7 @@
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-MS5837_t * MS5837;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -93,7 +93,7 @@ int main(void)
   MX_I2C1_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  MS5837_Init(MS5837);
+  MS5837_init(&hi2c1);
   /* USER CODE END 2 */
 
   /* Infinite loop */

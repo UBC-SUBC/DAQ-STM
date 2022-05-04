@@ -71,6 +71,7 @@ excludes:
 # If a CubeMX makefile is present it will automatically include the include directories from that makefile.
 includeDirectories: 
   - Core/Inc
+  - Drivers/STM32_MS5837
   - Drivers/STM32F1xx_HAL_Driver/Inc
   - Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
   - Drivers/CMSIS/Device/ST/STM32F1xx/Include
@@ -94,6 +95,7 @@ sourceFiles:
   - Core/Src/MS5837.c
   - Core/Src/stm32f1xx_it.c
   - Core/Src/stm32f1xx_hal_msp.c
+  - Drivers/STM32_MS5837/MS5837.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
@@ -109,6 +111,7 @@ sourceFiles:
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c
   - Core/Src/system_stm32f1xx.c
+  - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c
   - Src/**
   - Core/Src/**
   - Core/Lib/**
