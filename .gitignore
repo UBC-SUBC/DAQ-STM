@@ -5,3 +5,10 @@
 *.hex
 *.make
 *.cfg
+*.lst
+*.d
+*.o
+*.bin
+*.elf
+*.hex
+*.map
