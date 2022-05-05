@@ -1,14 +1,5 @@
 
-*.bin
-*.elf
-*.lst
-*.hex
-*.make
-*.cfg
-*.lst
 *.d
+*.lst
 *.o
-*.bin
-*.elf
-*.hex
-*.map
+*.bak

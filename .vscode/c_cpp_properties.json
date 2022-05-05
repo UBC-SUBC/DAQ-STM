@@ -8,7 +8,9 @@
         "Drivers/CMSIS/Include",
         "Drivers/STM32F1xx_HAL_Driver/Inc",
         "Drivers/STM32F1xx_HAL_Driver/Inc/Legacy",
-        "Drivers/STM32_MS5837"
+        "FATFS/App",
+        "FATFS/Target",
+        "Middlewares/Third_Party/FatFs/src"
       ],
       "defines": [
         "STM32F103xB",

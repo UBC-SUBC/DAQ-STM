@@ -6,7 +6,7 @@
 # - entry_2
 
 # The project name
-target: depth_sensor
+target: DAQ_Uart
 # Can be C or C++
 language: C
 
@@ -70,10 +70,12 @@ excludes:
 # Include directories (directories containing .h or .hpp files)
 # If a CubeMX makefile is present it will automatically include the include directories from that makefile.
 includeDirectories: 
+  - FATFS/Target
+  - FATFS/App
   - Core/Inc
-  - Drivers/STM32_MS5837
-  - Drivers/STM32F1xx_HAL_Driver/Inc
   - Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
+  - Drivers/STM32F1xx_HAL_Driver/Inc
+  - Middlewares/Third_Party/FatFs/src
   - Drivers/CMSIS/Device/ST/STM32F1xx/Include
   - Drivers/CMSIS/Include
   - Inc/**
@@ -92,12 +94,11 @@ includeDirectories:
 sourceFiles:  
   - startup_stm32f103xb.s
   - Core/Src/main.c
-  - Core/Src/MS5837.c
   - Core/Src/stm32f1xx_it.c
   - Core/Src/stm32f1xx_hal_msp.c
-  - Drivers/STM32_MS5837/MS5837.c
+  - FATFS/Target/user_diskio.c
+  - FATFS/App/fatfs.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c
-  - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c
@@ -108,10 +109,16 @@ sourceFiles:
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c
+  - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c
+  - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c
-  - Core/Src/system_stm32f1xx.c
   - Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c
+  - Core/Src/system_stm32f1xx.c
+  - Middlewares/Third_Party/FatFs/src/diskio.c
+  - Middlewares/Third_Party/FatFs/src/ff.c
+  - Middlewares/Third_Party/FatFs/src/ff_gen_drv.c
+  - Middlewares/Third_Party/FatFs/src/option/syscall.c
   - Src/**
   - Core/Src/**
   - Core/Lib/**

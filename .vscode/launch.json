@@ -3,7 +3,7 @@
         {
             "showDevDebugOutput": "parsed",
             "cwd": "${workspaceRoot}",
-            "executable": "./build/depth_sensor.elf",
+            "executable": "./build/DAQ_Uart.elf",
             "name": "Debug STM32",
             "request": "launch",
             "type": "cortex-debug",
