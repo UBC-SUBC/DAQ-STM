@@ -3,3 +3,8 @@
 *.lst
 *.o
 *.bak
+.vscode/.cortex-debug.registers.state.json
+*.bin
+build/DAQ_Uart.elf
+build/DAQ_Uart.hex
+*.map

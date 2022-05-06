@@ -129,10 +129,10 @@ int main(void)
   MX_USART3_UART_Init();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
-  float ypr[3] = {0.1, 0.2, 0.3};
+  int ypr[3] = {1, 2, 3};
   int gx = 20; int gy = 40; int gz = 50;
   int rpm = 200; int depth = 40; 
-  double battery_val = 0.5;
+  int battery_val = 0;
 
   /* USER CODE END 2 */
 
@@ -144,7 +144,9 @@ int main(void)
 	  HAL_Delay(1000);
 
     //"{\"Time\": %d,\"Yaw\": %f,\"Pitch\": %f,\"Roll\": %f,\"gx\": %d,\"gy\": %d,\"gz\": %d,\"RPM\": %d,\"depth\": %lf,\"battery\": %f}", time.unixtime(), ypr[0], ypr[1], ypr[2], gx, gy, gz, rpm, depth, battery_val
-    myprintf("{\"Time\": %d,\"Yaw\": %f,\"Pitch\": %f,\"Roll\": %f,\"gx\": %d,\"gy\": %d,\"gz\": %d,\"RPM\": %d,\"depth\": %lf,\"battery\": %f}\r\n", 1, ypr[0], ypr[1], ypr[2], gx, gy, gz, rpm, depth, battery_val);
+    //myprintf("{\"Time\": %d,\"Yaw\": %f,\"Pitch\": %f,\"Roll\": %f,\"gx\": %d,\"gy\": %d,\"gz\": %d,\"RPM\": %d,\"depth\": %lf,\"battery\": %f}\r\n", 1, ypr[0], ypr[1], ypr[2], gx, gy, gz, rpm, depth, battery_val);
+    //{'yaw':-99999, 'pitch':-99999, 'rpm': "-99999", 'speed': "-99999", 'depth': "-99999",'battery':False}
+    myprintf("{\"yaw\": %d, \"pitch\": %d, \"rpm\": %d, \"speed\": %d, \"depth\": %d, \"battery\": %d}\r\n", ypr[0], ypr[1], rpm, gx, depth, battery_val);
 
     if(gx > 50)
       gx = 20;
