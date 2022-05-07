@@ -47,5 +47,10 @@
 !Makefile
 *~
 
+#stm32-for-vscode
+STM32Make.make
+
 # Libraries
 /lib
+
+STM32Make.make
