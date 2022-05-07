@@ -1,4 +1,5 @@
 #include "MS5837.h"
+#include <math.h>
 
 struct MS5837_values_t MS5837_values;
 struct MS5837_t MS5837;
