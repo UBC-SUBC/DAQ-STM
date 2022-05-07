@@ -1,10 +1,51 @@
-
-*.d
-*.lst
+# Object files
 *.o
-*.bak
-.vscode/.cortex-debug.registers.state.json
+*.ko
+*.obj
+*.elf
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Misc
+*.d
+*.cfg
 *.bin
-build/DAQ_Uart.elf
-build/DAQ_Uart.hex
+*.lst
 *.map
+*.m
+*.yaml
+*.png
+
+# Eclipse CDT project files
+.cproject
+.project
+.settings/
+.vscode
+
+# Vagrant directory
+.vagrant/
+
+# Include makefiles
+!Makefile
+*~
+
+# Libraries
+/lib
