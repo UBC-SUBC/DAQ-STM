@@ -3,6 +3,8 @@
 *.ko
 *.obj
 *.elf
+*.d
+*.lst
 
 # Libraries
 *.lib
@@ -25,10 +27,8 @@
 *.hex
 
 # Misc
-*.d
 *.cfg
 *.bin
-*.lst
 *.map
 *.m
 *.yaml
