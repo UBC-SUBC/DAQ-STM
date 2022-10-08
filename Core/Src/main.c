@@ -140,7 +140,7 @@ int main(void)
     HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 	  HAL_Delay(30);
     v = bno055_getVectorEuler();
-    serialprintf("Heading: %d Roll: %d Pitch: %d\r\n", (int) v.x, (int) v.y, (int) v.z);
+    serialprintf("Yaw: %d Roll: %d Pitch: %d\r\n", (int) v.x, (int) v.z, (int) v.y);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -101,7 +101,7 @@ CPU = -mcpu=cortex-m3
 # NONE for Cortex-M0/M0+/M3
 
 # float-abi
-FLOAT-ABI = -msoft-float
+FLOAT-ABI = soft
 
 # mcu
 MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
@@ -199,7 +199,7 @@ clean:
   
 
 Serial_windows:
-	putty -serial com3 -sercfg 115200,8,n,1,N
+	putty -serial com5 -sercfg 115200,8,n,1,N
 
 #######################################
 # dependencies
