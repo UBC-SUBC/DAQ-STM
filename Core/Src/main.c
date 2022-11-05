@@ -94,6 +94,7 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   MS5837_init(&hi2c1);
+  MS5837_read(&hi2c1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -101,6 +102,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    float altitude_float = altitude();
+    float depth_float = depth();
     
     /* USER CODE BEGIN 3 */
   }
