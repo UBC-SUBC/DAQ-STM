@@ -3,6 +3,7 @@
     "cortex-debug.openocdPath": "C:\\USERS\\TIMOL\\APPDATA\\ROAMING\\CODE\\USER\\GLOBALSTORAGE\\BMD.STM32-FOR-VSCODE\\@XPACK-DEV-TOOLS\\OPENOCD\\0.11.0-5.1\\.CONTENT\\BIN\\OPENOCD.EXE",
     "files.associations": {
         "*.inc": "8051",
-        "stm32f1xx_hal.h": "c"
+        "stm32f1xx_hal.h": "c",
+        "ms5837.h": "c"
     }
 }
