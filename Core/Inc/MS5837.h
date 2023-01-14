@@ -8,7 +8,7 @@
 #ifndef INC_MS5837_H_
 #define INC_MS5837_H_
 
-#include "stm32f4xx_hal.h"
+#include "stm32f1xx_hal.h"
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
