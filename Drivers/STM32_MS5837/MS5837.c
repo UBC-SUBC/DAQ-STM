@@ -130,7 +130,7 @@ static void calculate() {
 
 uint8_t MS5837_init(I2C_HandleTypeDef *i2c_channel) {
 	MS5837.fluidDensity = 1029;
-	MS5837.model = MS5837_30BA;
+	MS5837.model = MS5837_02BA;
 	
 	I2C_send(MS5837_RESET, i2c_channel);
 	HAL_Delay(10);
@@ -166,9 +166,12 @@ void MS5837_read(I2C_HandleTypeDef *i2c_channel) {
 }
 
 float depth() {
-	return (MS5837.pressure*100.0f-101300)/(MS5837.fluidDensity*9.80665);
+	//return (MS5837.pressure*100.0f-101300)/(MS5837.fluidDensity*9.80665);
+	return 5.0;
 }
 
 float altitude() {
-	return (1-pow((MS5837.pressure/1013.25),.190284))*145366.45*.3048;
+	// return (1-pow((MS5837.pressure/1013.25),.190284))*145366.45*.3048;
+	int hello = 5;
+	return 6.0;
 }
