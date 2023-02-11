@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 1
 
 
    1              		.cpu arm7tdmi
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
   30:Core/Src/syscalls.c **** #include <time.h>
   31:Core/Src/syscalls.c **** #include <sys/time.h>
   32:Core/Src/syscalls.c **** #include <sys/times.h>
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 2
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 2
 
 
   33:Core/Src/syscalls.c **** 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
   64              		.global	_kill
   65              		.syntax unified
   66              		.code	16
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 3
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 3
 
 
   67              		.thumb_func
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
  115              		@ frame_needed = 0, uses_anonymous_args = 0
  116              		.loc 1 61 1 is_stmt 0 view .LVU13
  117 0000 10B5     		push	{r4, lr}
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 4
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 4
 
 
  118              		.cfi_def_cfa_offset 8
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
  165              	.LVL6:
  166              	.L8:
   71:Core/Src/syscalls.c **** 	{
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 5
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 5
 
 
   72:Core/Src/syscalls.c **** 		*ptr++ = __io_getchar();
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
  213 0000 70B5     		push	{r4, r5, r6, lr}
  214              		.cfi_def_cfa_offset 16
  215              		.cfi_offset 4, -16
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 6
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 6
 
 
  216              		.cfi_offset 5, -12
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
  261              		.section	.text._close,"ax",%progbits
  262              		.align	1
  263              		.global	_close
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 7
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 7
 
 
  264              		.syntax unified
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
   99:Core/Src/syscalls.c **** }
  310              		.loc 1 99 1 is_stmt 0 view .LVU57
  311 0006 0020     		movs	r0, #0
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 8
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 8
 
 
  312              	.LVL25:
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
  361              		.loc 1 108 2 view .LVU64
  109:Core/Src/syscalls.c **** }
  362              		.loc 1 109 1 is_stmt 0 view .LVU65
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 9
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 9
 
 
  363 0000 0020     		movs	r0, #0
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
  412              		.loc 1 118 1 is_stmt 1 view -0
  413              		.cfi_startproc
  414              		@ Function supports interworking.
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 10
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 10
 
 
  415              		@ args = 0, pretend = 0, frame = 0
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
  464 0006 0223     		movs	r3, #2
  465 0008 0360     		str	r3, [r0]
  126:Core/Src/syscalls.c **** 	return -1;
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 11
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 11
 
 
  466              		.loc 1 126 2 is_stmt 1 view .LVU83
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
  515              		.loc 1 135 1 is_stmt 1 view -0
  516              		.cfi_startproc
  517              		@ Function supports interworking.
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 12
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 12
 
 
  518              		@ args = 0, pretend = 0, frame = 0
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
  565              		.loc 1 144 1 view .LVU102
  566 000c 4042     		rsbs	r0, r0, #0
  567              		@ sp needed
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 13
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 13
 
 
  568 000e 10BC     		pop	{r4}
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
  151:Core/Src/syscalls.c **** 
  152:Core/Src/syscalls.c **** int _execve(char *name, char **argv, char **env)
  153:Core/Src/syscalls.c **** {
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 14
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 14
 
 
  620              		.loc 1 153 1 is_stmt 1 view -0
@@ -833,51 +833,51 @@ ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 1
  671              		.file 7 "c:\\users\\timol\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
  672              		.file 8 "c:\\users\\timol\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
  673              		.file 9 "c:\\users\\timol\\appdata\\roaming\\code\\user\\globalstorage\\bmd.stm32-for-vscode\\@xpa
-ARM GAS  C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s 			page 15
+ARM GAS  C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s 			page 15
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 syscalls.c
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:24     .text.initialise_monitor_handles:0000000000000000 initialise_monitor_handles
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:35     .text.initialise_monitor_handles:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:40     .text._getpid:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:46     .text._getpid:0000000000000000 _getpid
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:63     .text._kill:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:69     .text._kill:0000000000000000 _kill
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:101    .text._exit:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:107    .text._exit:0000000000000000 _exit
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:135    .text._read:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:141    .text._read:0000000000000000 _read
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:198    .text._write:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:204    .text._write:0000000000000000 _write
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:262    .text._close:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:268    .text._close:0000000000000000 _close
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:289    .text._fstat:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:295    .text._fstat:0000000000000000 _fstat
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:320    .text._isatty:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:326    .text._isatty:0000000000000000 _isatty
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:346    .text._lseek:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:352    .text._lseek:0000000000000000 _lseek
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:372    .text._open:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:378    .text._open:0000000000000000 _open
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:403    .text._wait:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:409    .text._wait:0000000000000000 _wait
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:441    .text._unlink:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:447    .text._unlink:0000000000000000 _unlink
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:479    .text._times:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:485    .text._times:0000000000000000 _times
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:506    .text._stat:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:512    .text._stat:0000000000000000 _stat
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:537    .text._link:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:543    .text._link:0000000000000000 _link
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:575    .text._fork:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:581    .text._fork:0000000000000000 _fork
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:611    .text._execve:0000000000000000 $t
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:617    .text._execve:0000000000000000 _execve
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:660    .data.environ:0000000000000000 environ
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:654    .bss.__env:0000000000000000 __env
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:651    .bss.__env:0000000000000000 $d
-C:\Users\timol\AppData\Local\Temp\ccz8bw2v.s:657    .data.environ:0000000000000000 $d
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:24     .text.initialise_monitor_handles:0000000000000000 initialise_monitor_handles
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:35     .text.initialise_monitor_handles:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:40     .text._getpid:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:46     .text._getpid:0000000000000000 _getpid
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:63     .text._kill:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:69     .text._kill:0000000000000000 _kill
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:101    .text._exit:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:107    .text._exit:0000000000000000 _exit
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:135    .text._read:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:141    .text._read:0000000000000000 _read
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:198    .text._write:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:204    .text._write:0000000000000000 _write
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:262    .text._close:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:268    .text._close:0000000000000000 _close
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:289    .text._fstat:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:295    .text._fstat:0000000000000000 _fstat
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:320    .text._isatty:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:326    .text._isatty:0000000000000000 _isatty
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:346    .text._lseek:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:352    .text._lseek:0000000000000000 _lseek
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:372    .text._open:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:378    .text._open:0000000000000000 _open
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:403    .text._wait:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:409    .text._wait:0000000000000000 _wait
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:441    .text._unlink:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:447    .text._unlink:0000000000000000 _unlink
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:479    .text._times:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:485    .text._times:0000000000000000 _times
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:506    .text._stat:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:512    .text._stat:0000000000000000 _stat
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:537    .text._link:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:543    .text._link:0000000000000000 _link
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:575    .text._fork:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:581    .text._fork:0000000000000000 _fork
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:611    .text._execve:0000000000000000 $t
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:617    .text._execve:0000000000000000 _execve
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:660    .data.environ:0000000000000000 environ
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:654    .bss.__env:0000000000000000 __env
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:651    .bss.__env:0000000000000000 $d
+C:\Users\timol\AppData\Local\Temp\ccPAlWwY.s:657    .data.environ:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 __errno

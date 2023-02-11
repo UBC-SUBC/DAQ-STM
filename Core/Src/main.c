@@ -131,14 +131,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
     MS5837_read(&hi2c1);
     altitude_float = altitude();
     depth_float = depth();
 
     // if printing: Altitude: 44307, Depth: -10, then pressure is not being read (or is 0), probably the former.
     myprintf("Altitude: %d, Depth: %d\r\n", (int) altitude_float, (int) depth_float);
+    /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
+
   }
   /* USER CODE END 3 */
 }
