@@ -1,4 +1,5 @@
 #include "MS5837.h"
+#include "math.h"
 
 struct MS5837_values_t MS5837_values;
 struct MS5837_t MS5837;
@@ -26,7 +27,7 @@ static int16_t I2C_read16(uint8_t addr, I2C_HandleTypeDef *i2c_channel){
 
 static int32_t I2C_read32(uint8_t addr, I2C_HandleTypeDef *i2c_channel){
 	uint8_t dataArr[4] = {0,0,0,0};
-	HAL_I2C_Master_Transmit(i2c_channel, MS5837_ADDR<<1, &addr, 1, 100 );
+	HAL_I2C_Master_Transmit(i2c_channel, MS5837_ADDR<<1, &addr, 1, 100);
 	HAL_Delay(20);
 	HAL_I2C_Master_Receive(i2c_channel,MS5837_ADDR<<1,dataArr, 4, 100);
 	uint32_t data = (dataArr[0] << 24) | (dataArr[1] << 16) | (dataArr[2] << 8) | dataArr[3];
@@ -129,7 +130,7 @@ static void calculate() {
 }
 
 uint8_t MS5837_init(I2C_HandleTypeDef *i2c_channel) {
-	MS5837.fluidDensity = 1029;
+	MS5837.fluidDensity = 997;
 	MS5837.model = MS5837_02BA;
 	
 	I2C_send(MS5837_RESET, i2c_channel);
@@ -166,12 +167,9 @@ void MS5837_read(I2C_HandleTypeDef *i2c_channel) {
 }
 
 float depth() {
-	//return (MS5837.pressure*100.0f-101300)/(MS5837.fluidDensity*9.80665);
-	return 5.0;
+	return (MS5837.pressure*100.0f-101300)/(MS5837.fluidDensity*9.80665);
 }
 
 float altitude() {
-	// return (1-pow((MS5837.pressure/1013.25),.190284))*145366.45*.3048;
-	int hello = 5;
-	return 6.0;
+	return (1-pow((MS5837.pressure/1013.25),.190284))*145366.45*.3048;
 }

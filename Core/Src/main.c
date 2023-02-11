@@ -82,8 +82,8 @@ void myprintf(const char *fmt, ...) {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  float altitude_float;
-  float depth_float;
+  float altitude_float = 0;
+  float depth_float = 0;
 
   /* USER CODE END 1 */
 
@@ -108,7 +108,12 @@ int main(void)
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  MS5837_init(&hi2c1);
+
+  // checks if initialization worked
+  while (!MS5837_init(&hi2c1)) {
+    myprintf("Init failed!");
+  }
+  myprintf("Sensor initialized\n\r");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -118,7 +123,9 @@ int main(void)
     MS5837_read(&hi2c1);
     altitude_float = altitude();
     depth_float = depth();
-    myprintf("Altitude: %d, Depth: %d \n", (int) altitude_float, (int) depth_float);
+
+    // if printing: Altitude: 44307, Depth: -10, then pressure is not being read (or is 0), probably the former.
+    myprintf("Altitude: %d, Depth: %d\r\n", (int) altitude_float, (int) depth_float);
     /* USER CODE END WHILE */
     
     /* USER CODE BEGIN 3 */
