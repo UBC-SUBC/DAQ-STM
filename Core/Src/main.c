@@ -23,6 +23,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "MS5837.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,11 +57,21 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
-
+void myprintf(const char *fmt, ...);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void myprintf(const char *fmt, ...) {
+  static char buffer[256];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buffer, sizeof(buffer), fmt, args);
+  va_end(args);
+
+  int len = strlen(buffer);
+  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, len, -1);
+}
 
 /* USER CODE END 0 */
 
@@ -69,8 +82,8 @@ static void MX_I2C1_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  float altitude_float;
-  float depth_float;
+  float altitude_float = 0;
+  float depth_float = 0;
 
   /* USER CODE END 1 */
 
@@ -95,7 +108,12 @@ int main(void)
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  MS5837_init(&hi2c1);
+
+  // checks if initialization worked
+  while (!MS5837_init(&hi2c1)) {
+    myprintf("Init failed!");
+  }
+  myprintf("Sensor initialized\n\r");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -105,7 +123,9 @@ int main(void)
     MS5837_read(&hi2c1);
     altitude_float = altitude();
     depth_float = depth();
-    printf("%f, %f", altitude_float, depth_float);
+
+    // if printing: Altitude: 44307, Depth: -10, then pressure is not being read (or is 0), probably the former.
+    myprintf("Altitude: %d, Depth: %d\r\n", (int) altitude_float, (int) depth_float);
     /* USER CODE END WHILE */
     
     /* USER CODE BEGIN 3 */

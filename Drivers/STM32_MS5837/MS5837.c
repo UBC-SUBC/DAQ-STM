@@ -1,4 +1,5 @@
 #include "MS5837.h"
+#include "math.h"
 
 struct MS5837_values_t MS5837_values;
 struct MS5837_t MS5837;
@@ -26,7 +27,7 @@ static int16_t I2C_read16(uint8_t addr, I2C_HandleTypeDef *i2c_channel){
 
 static int32_t I2C_read32(uint8_t addr, I2C_HandleTypeDef *i2c_channel){
 	uint8_t dataArr[4] = {0,0,0,0};
-	HAL_I2C_Master_Transmit(i2c_channel, MS5837_ADDR<<1, &addr, 1, 100 );
+	HAL_I2C_Master_Transmit(i2c_channel, MS5837_ADDR<<1, &addr, 1, 100);
 	HAL_Delay(20);
 	HAL_I2C_Master_Receive(i2c_channel,MS5837_ADDR<<1,dataArr, 4, 100);
 	uint32_t data = (dataArr[0] << 24) | (dataArr[1] << 16) | (dataArr[2] << 8) | dataArr[3];
@@ -129,8 +130,8 @@ static void calculate() {
 }
 
 uint8_t MS5837_init(I2C_HandleTypeDef *i2c_channel) {
-	MS5837.fluidDensity = 1029;
-	MS5837.model = MS5837_30BA;
+	MS5837.fluidDensity = 997;
+	MS5837.model = MS5837_02BA;
 	
 	I2C_send(MS5837_RESET, i2c_channel);
 	HAL_Delay(10);
