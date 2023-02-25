@@ -19,9 +19,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "fatfs.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "bno055_stm32.h"
 #include "MS5837.h"
 #include <stdio.h>
 #include <string.h>
@@ -30,7 +32,8 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define MAX_LED 50
+#define USE_BRIGHTNESS 0
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -49,12 +52,18 @@ I2C_HandleTypeDef hi2c2;
 SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
 
+TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim3;
+
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
-
+uint8_t LED_Data[MAX_LED][4]; //Array to store the colour of LED
+uint8_t LED_Mod[MAX_LED][4]; //Array to store the brightness of the LED
+uint16_t pwmData[(24*MAX_LED)+50]; //Array to store colour in PWM format that LEDs expect
+volatile int datasentflag=0; 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -67,12 +76,24 @@ static void MX_USART1_UART_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_I2C2_Init(void);
 static void MX_SPI1_Init(void);
+static void MX_TIM1_Init(void);
+static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
 void myprintf(const char *fmt, ...);
+void Set_LED (int LEDnum, int Red, int Green, int Blue);
+void LED_Sequence(int mode, int Red, int Green, int Blue);
+void SetSome(int Red, int Green, int Blue, int interval, int start);
+void SweepAll(int Red, int Green, int Blue);
+void Christmas(int mode);
+void LED_RaceStart(void);
+void TestAll(int Red, int Green, int Blue);
+double CalculateAccel (double velocity1, double velocity2, double time);
+void ReflectData(double vector);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
 void myprintf(const char *fmt, ...) {
   static char buffer[256];
   va_list args;
@@ -82,6 +103,219 @@ void myprintf(const char *fmt, ...) {
 
   int len = strlen(buffer);
   HAL_UART_Transmit(&huart2, (uint8_t*)buffer, len, -1);
+}
+
+//Function to set LED colours
+void Set_LED (int LEDnum, int Red, int Green, int Blue)
+{
+	LED_Data[LEDnum][0] = LEDnum;
+	LED_Data[LEDnum][1] = Red;
+	LED_Data[LEDnum][2] = Green;
+	LED_Data[LEDnum][3] = Blue;
+}
+
+//Function to send data to LEDs
+void WS2812_Send (void)
+{
+	uint32_t index=0; //Indexing varibale used to maintain its value through loops
+	uint32_t colour;
+
+  for (int i = 0; i < MAX_LED; i++){
+    //Extract colour for current LED as a 24-bit string. Each element of LED_Data is 8 bits
+    colour = ((LED_Data[i][1]<<16)|(LED_Data[i][2]<<8)|(LED_Data[i][3]));
+
+    //Parse the extracted colour to see how long the PWM should be for each bit
+    //Start j at 23 since MSB must be sent first(see datasheet)
+    for (int j = 23; j >= 0; j--){
+      
+      if(colour & (1<<j)){
+        pwmData[index] = 70*0.56667; //In order to send a 1, the duty cycle must be 0.56667
+      }
+      else pwmData[index] = 70*0.3; //In order to send a 0, the duty cycle must be 0.3
+      index++;
+    }    
+    
+  }
+
+  //Add the reset string so that the LEDs know that the end of the string has been reached
+  for(int i = 0; i<50; i++){
+    pwmData[index] = 0;
+    index++;
+  }
+
+  //Once the LED colours have been parsed, send the data!
+  HAL_TIM_PWM_Start_DMA(&htim1, TIM_CHANNEL_2, (uint32_t*)pwmData, index);
+  while(!datasentflag){}; //Wait until data has been sent(flag is set through an interrupt)
+  datasentflag = 0; //Reset flag after data has beens sent so we can send more data
+}
+
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
+{
+	HAL_TIM_PWM_Stop_DMA(&htim1, TIM_CHANNEL_2);
+  datasentflag=1;
+}
+
+//Sets all LEDs to one colour
+void SetAll(int Red, int Green, int Blue){
+  for(int i = 0; i < 50; i++){
+    Set_LED(i, Red, Green, Blue);
+  }
+}
+
+//Sets some LEDs to a colour using a start number and intervals of incrementation
+void SetSome(int Red, int Green, int Blue, int interval, int start){
+  for(int i = start; i < 50; i += interval){
+    Set_LED(i, Red, Green, Blue);
+  }
+}
+
+//Function to set LEDs in certain ranges (0 through 10, 5 through 30, etc.)
+void SetSection(int Red, int Green, int Blue, int start, int final)
+{
+  for(int i = start; i <= final; i++){
+    Set_LED(i, Red, Green, Blue);
+  }
+}
+
+//fades all the LEDs between some colour and off
+void SweepAll(int Red, int Green, int Blue)
+{
+  for(double i = 0; i < 1; i += 0.01){
+    SetAll(i*Red, i*Green, i*Blue);
+    WS2812_Send();
+    HAL_Delay(10);
+  }
+  for(double i = 1; i > 0; i -= 0.01){
+    SetAll(i*Red, i*Green, i*Blue);
+    WS2812_Send();
+    HAL_Delay(10);
+  }
+  HAL_Delay(100);
+}
+
+//:)
+void Christmas(int mode)
+{
+  //mode 0: static
+  //mode 1: change lights up
+  //mode 2: change lights down
+
+  if(mode == 0){
+   for(int i = 0; i < 50 ; i++){
+      if(i % 3 == 0){
+        Set_LED(i, 255, 0, 0); //red
+      }
+      else if(i % 3 == 1){
+        Set_LED(i, 255, 255, 255); //white
+      }
+      else if(i % 3 == 2){
+        Set_LED(i, 88, 139, 31); //green
+      }
+    }
+  }
+  else if(mode == 1){
+    for(int i = 0; i < 50 ; i++){
+      switch (LED_Data[i][2]) //if green is...
+      {
+      case 0: //in red mode
+        Set_LED(i, 255, 255, 255); //make it white
+        break;
+
+      case 255: //in white mode
+         Set_LED(i, 88, 139, 31); //to green
+        break;
+      
+      case 139: //in green mode
+        Set_LED(i, 255, 0, 0); //make it red
+        break;
+      
+      default:
+        break;
+      }
+
+      }
+    }
+    else if(mode == 2){
+    for(int i = 0; i < 50 ; i++){
+      switch (LED_Data[i][2])
+      {
+      case 0:
+        Set_LED(i, 88, 139, 31);
+        break;
+
+      case 255:
+         Set_LED(i, 255, 0, 0);
+        break;
+      
+      case 139:
+        Set_LED(i, 255, 255, 255);
+        break;
+      
+      default:
+        break;
+      }
+
+      }
+    }
+    
+}
+
+
+//sets all leds to certain colours for periods of time before setting them off
+void LED_RaceStart(void){
+  SetAll(255, 0, 0);
+  WS2812_Send();
+  HAL_Delay(2000);
+
+  SetAll(150, 100, 0);
+  WS2812_Send();
+  HAL_Delay(2000);
+
+  SetAll(0, 255, 0);
+  WS2812_Send();
+  HAL_Delay(2000);
+  
+  SetAll(0,0,0);
+  WS2812_Send();
+}
+
+//if mode is 1, then the leds turn some colour, one by one
+void LED_Sequence(int mode, int Red, int Green, int Blue){
+  for(int i = 0; i < 50; i++){
+    if(mode == 1){
+       Set_LED(i, Red, Green, Blue);
+    }
+    else Set_LED(i, 0, 0, 0); 
+    
+    WS2812_Send();
+    HAL_Delay(50);
+  }
+}
+
+//test function
+void TestAll(int Red, int Green, int Blue){
+  Set_LED(0, Red, Green, Blue);
+
+  for(int i = 1; i < 50; i++){
+    SetAll(0,0,0);
+    Set_LED(i, Red, Green, Blue);
+    WS2812_Send();
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin)){}
+    while(!HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin)){}
+  }
+}
+void ReflectData(double vector) {
+ if (vector > 0){
+   SetAll(255, 0, 0);
+ } else if (vector < 0) {
+   SetAll(0, 255, 0);
+ }
+}
+ 
+double CalculateAccel (double velocity1, double velocity2, double time) {
+  double acceleration = (velocity1 + velocity2)/time;
+
+  return acceleration;
 }
 
 /* USER CODE END 0 */
@@ -123,7 +357,20 @@ int main(void)
   MX_USART3_UART_Init();
   MX_I2C2_Init();
   MX_SPI1_Init();
+  MX_FATFS_Init();
+  MX_TIM1_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+
+  bno055_assignI2C(&hi2c1);
+  bno055_setup();
+  bno055_setOperationModeNDOF();
+
+  HAL_Delay(1000); //a short delay is important to let the SD card settle
+
+  bno055_vector_t v = {0,0,0,0};
+  SetAll(255,0,255);
+  WS2812_Send();
 
   // checks if initialization worked
   while (!MS5837_init(&hi2c1)) {
@@ -136,12 +383,22 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    // depth sensor code
     MS5837_read(&hi2c1);
     altitude_float = altitude();
     depth_float = depth();
 
     // if printing: Altitude: 44307, Depth: -10, then pressure is not being read (or is 0), probably the former.
     myprintf("Altitude: %d, Depth: %d\r\n", (int) altitude_float, (int) depth_float);
+
+    // bno code
+	  HAL_Delay(30);
+    v = bno055_getVectorEuler();
+    myprintf("Yaw: %d Roll: %d Pitch: %d\r\n", (int) v.x, (int) v.z, (int) v.y);
+    SetAll(255,0,255);
+    WS2812_Send();
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -329,6 +586,139 @@ static void MX_SPI2_Init(void)
   /* USER CODE BEGIN SPI2_Init 2 */
 
   /* USER CODE END SPI2_Init 2 */
+
+}
+
+/**
+  * @brief TIM1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM1_Init(void)
+{
+
+  /* USER CODE BEGIN TIM1_Init 0 */
+
+  /* USER CODE END TIM1_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+  TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig = {0};
+
+  /* USER CODE BEGIN TIM1_Init 1 */
+
+  /* USER CODE END TIM1_Init 1 */
+  htim1.Instance = TIM1;
+  htim1.Init.Prescaler = 0;
+  htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim1.Init.Period = 65535;
+  htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim1.Init.RepetitionCounter = 0;
+  htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim1, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
+  sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
+  sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
+  sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
+  sBreakDeadTimeConfig.DeadTime = 0;
+  sBreakDeadTimeConfig.BreakState = TIM_BREAK_DISABLE;
+  sBreakDeadTimeConfig.BreakPolarity = TIM_BREAKPOLARITY_HIGH;
+  sBreakDeadTimeConfig.AutomaticOutput = TIM_AUTOMATICOUTPUT_DISABLE;
+  if (HAL_TIMEx_ConfigBreakDeadTime(&htim1, &sBreakDeadTimeConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM1_Init 2 */
+
+  /* USER CODE END TIM1_Init 2 */
+  HAL_TIM_MspPostInit(&htim1);
+
+}
+
+/**
+  * @brief TIM3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM3_Init(void)
+{
+
+  /* USER CODE BEGIN TIM3_Init 0 */
+
+  /* USER CODE END TIM3_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM3_Init 1 */
+
+  /* USER CODE END TIM3_Init 1 */
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 0;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 65535;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM3_Init 2 */
+
+  /* USER CODE END TIM3_Init 2 */
+  HAL_TIM_MspPostInit(&htim3);
 
 }
 
